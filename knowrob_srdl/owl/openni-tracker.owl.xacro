@@ -53,7 +53,7 @@
         <rdf:type rdf:resource="&srdl2-comp;ComponentComposition"/>
         <rdf:type rdf:resource="&knowrob;${long_prefix}Arm"/>
         <srdl2-comp:baseLinkOfComposition 
-          rdf:resource="&robot;openni_${prefix}_chest"/>
+          rdf:resource="&robot;openni_thorax"/>
         <srdl2-comp:endLinkOfComposition 
           rdf:resource="&robot;openni_${prefix}_fingertip"/>
     </owl:NamedIndividual>
@@ -84,17 +84,95 @@
     </owl:NamedIndividual>
   </xacro:macro>
 
+  <xacro:macro name="leg" params="prefix long_prefix">
+    <owl:NamedIndividual rdf:about="&robot;openni_${prefix}_leg">
+        <rdf:type rdf:resource="&srdl2-comp;ComponentComposition"/>
+        <!-- TODO(Moritz): does this exist? -->
+        <rdf:type rdf:resource="&knowrob;${long_prefix}Leg"/>
+        <srdl2-comp:baseLinkOfComposition 
+          rdf:resource="&robot;openni_pelvis"/>
+        <srdl2-comp:endLinkOfComposition 
+          rdf:resource="&robot;openni_${prefix}_foot"/>
+    </owl:NamedIndividual>
+ 
+    <xacro:joint_with_link joint_name="&robot;openni_${prefix}_hip"
+                           link_name="&robot;openni_${prefix}_thigh"/>
+
+    <xacro:link_with_joint link_name="&robot;openni_${prefix}_thigh"
+                           joint_name="&robot;openni_${prefix}_knee" />
+
+    <xacro:joint_with_link joint_name="&robot;openni_${prefix}_knee"
+                           link_name="&robot;openni_${prefix}_lower_leg"/>
+
+    <xacro:link_with_joint link_name="&robot;openni_${prefix}_lower_leg"
+                           joint_name="&robot;openni_${prefix}_ankle" />
+
+    <xacro:joint_with_link joint_name="&robot;openni_${prefix}_ankle"
+                           link_name="&robot;openni_${prefix}_foot"/>
+
+    <owl:NamedIndividual rdf:about="&robot;openni_${prefix}_foot">
+        <rdf:type rdf:resource="&srdl2-comp;UrdfLink"/>
+    </owl:NamedIndividual>
+  </xacro:macro> 
+ 
   <xacro:macro name="half_body" params="prefix long_prefix">
     <xacro:openni_arm prefix="${prefix}" long_prefix="${long_prefix}" />
-
-    <xacro:joint_with_link joint_name="&robot;openni_${prefix}_upper_abdomen"
-                           link_name="&robot;openni_${prefix}_chest"/>
-
-    <xacro:joint_with_link joint_name="&robot;openni_${prefix}_lower_abdomen"
-                           link_name="&robot;openni_${prefix}_hip"/>
-
-    <!-- TODO(Georg): add leg -->
+    <xacro:leg prefix="${prefix}" long_prefix="${long_prefix}" />
   </xacro:macro> 
+
+  <xacro:macro name="body_meridian">
+    <owl:NamedIndividual rdf:about="&robot;openni_trunk">
+        <rdf:type rdf:resource="&srdl2-comp;ComponentComposition"/>
+        <!-- TODO(Moritz): does this exist? -->
+        <rdf:type rdf:resource="&knowrob;Trunk"/>
+        <srdl2-comp:baseLinkOfComposition 
+          rdf:resource="&robot;openni_pelvis"/>
+        <srdl2-comp:endLinkOfComposition 
+          rdf:resource="&robot;openni_thorax"/>
+    </owl:NamedIndividual>
+
+   <owl:NamedIndividual rdf:about="&robot;openni_torso">
+      <rdf:type rdf:resource="&srdl2-comp;UrdfLink"/>
+      <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_upper_spine"/>
+      <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_lower_spine"/>
+    </owl:NamedIndividual>
+
+    <xacro:joint_with_link joint_name="&robot;openni_upper_spine"
+                           link_name="&robot;openni_thorax"/>
+
+    <xacro:joint_with_link joint_name="&robot;openni_lower_spine"
+                           link_name="&robot;openni_pelvis"/>
+
+    <owl:NamedIndividual rdf:about="&robot;openni_pelvis">
+      <rdf:type rdf:resource="&srdl2-comp;UrdfLink"/>
+      <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_r_hip"/>
+      <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_l_hip"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&robot;openni_thorax">
+      <rdf:type rdf:resource="&srdl2-comp;UrdfLink"/>
+      <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_r_shoulder"/>
+      <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_l_shoulder"/>
+      <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_neck"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&robot;openni_head_neck">
+        <rdf:type rdf:resource="&srdl2-comp;ComponentComposition"/>
+        <!-- TODO(Moritz): does this exist? -->
+        <rdf:type rdf:resource="&knowrob;HeadNeckRegion"/>
+        <srdl2-comp:baseLinkOfComposition 
+          rdf:resource="&robot;openni_thorax"/>
+        <srdl2-comp:endLinkOfComposition 
+          rdf:resource="&robot;openni_head"/>
+    </owl:NamedIndividual>
+ 
+    <xacro:joint_with_link joint_name="&robot;openni_neck"
+                           link_name="&robot;openni_head"/>
+
+    <owl:NamedIndividual rdf:about="&robot;openni_head">
+      <rdf:type rdf:resource="&srdl2-comp;UrdfLink"/>
+    </owl:NamedIndividual>
+  </xacro:macro>
 
   <!-- =========================================== -->
   <!-- |   Robot Instance                        | -->
@@ -107,19 +185,17 @@
     <!-- TODO(Georg): why is this necessary? -->
     <srdl2-comp:succeedingLink rdf:resource="&robot;openni_torso"/>
 
+    <srdl2-comp:subComponent rdf:resource="&robot;openni_head_neck"/>
+    <srdl2-comp:subComponent rdf:resource="&robot;openni_trunk"/>
     <srdl2-comp:subComponent rdf:resource="&robot;openni_r_arm"/>
-    <!-- TODO(Georg): add other sub-components -->
+    <srdl2-comp:subComponent rdf:resource="&robot;openni_l_arm"/>
+    <srdl2-comp:subComponent rdf:resource="&robot;openni_r_leg"/>
+    <srdl2-comp:subComponent rdf:resource="&robot;openni_l_leg"/>
   </owl:NamedIndividual>
 
-  <!-- TODO(Georg): add head -->
-
-  <owl:NamedIndividual rdf:about="&robot;openni_torso">
-    <rdf:type rdf:resource="&srdl2-comp;UrdfLink"/>
-    <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_r_upper_abdomen"/>
-    <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_l_upper_abdomen"/>
-    <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_r_lower_abdomen"/>
-    <srdl2-comp:succeedingJoint rdf:resource="&robot;openni_l_lower_abdomen"/>
-  </owl:NamedIndividual>
+  <xacro:body_meridian/>
 
   <xacro:half_body prefix="r" long_prefix="Right"/>
+
+  <xacro:half_body prefix="l" long_prefix="Left"/>
 </rdf:RDF>
