@@ -38,7 +38,45 @@
         <rdfs:range rdf:resource="&knowrob;MathExpression"/>
     </owl:ObjectProperty>
 
+    <owl:ObjectProperty rdf:about="&knowrob;x">
+        <rdfs:domain rdf:resource="&knowrob;VectorExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
 
+    <owl:ObjectProperty rdf:about="&knowrob;x">
+        <rdfs:domain rdf:resource="&knowrob;VectorExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;y">
+        <rdfs:domain rdf:resource="&knowrob;VectorExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;z">
+        <rdfs:domain rdf:resource="&knowrob;VectorExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;x">
+        <rdfs:domain rdf:resource="&knowrob;QuaternionExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;y">
+        <rdfs:domain rdf:resource="&knowrob;QuaternionExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;z">
+        <rdfs:domain rdf:resource="&knowrob;QuaternionExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;w">
+        <rdfs:domain rdf:resource="&knowrob;QuaternionExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
 
     <owl:DatatypeProperty rdf:about="&knowrob;termvalue">
         <rdfs:domain rdf:resource="&knowrob;MathExpression"/>
@@ -62,6 +100,31 @@
     <rdf:Description rdf:about="&knowrob;MathExpression">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
     </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;DoubleExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;ConstDoubleExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;VariableDoubleExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;VectorExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;RotationExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;QuaternionExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;RotationExpression"/>
+    </rdf:Description>
+
 
     <rdf:Description rdf:about="&knowrob;AdditionTerm">
         <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
