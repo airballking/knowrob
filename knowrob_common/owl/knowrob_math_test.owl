@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY swrl "http://www.w3.org/2003/11/swrl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY knowrob "http://knowrob.org/kb/knowrob.owl#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY computable "http://knowrob.org/kb/computable.owl#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://knowrob.org/kb/knowrob_math_test.owl#"
+     xml:base="http://knowrob.org/kb/knowrob_math_test.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:computable="http://knowrob.org/kb/computable.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:knowrob="http://knowrob.org/kb/knowrob.owl#">
+    <owl:Ontology rdf:about="http://knowrob.org/kb/knowrob_math_test.owl">
+        <owl:imports rdf:resource="package://knowrob_common/owl/knowrob_math.owl"/>
+    </owl:Ontology>
+
+    <owl:NamedIndividual rdf:about="&knowrob;DoubleConst_7x8S">
+        <rdf:type rdf:resource="&knowrob;DoubleConstExpression"/>
+        <knowrob:value rdf:datatype="&xsd;double">-1.23</knowrob:value>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&knowrob;DoubleConst_U87s">
+        <rdf:type rdf:resource="&knowrob;DoubleConstExpression"/>
+        <knowrob:value rdf:datatype="&xsd;double">3.21</knowrob:value>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&knowrob;DoubleVar_7x8S">
+        <rdf:type rdf:resource="&knowrob;DoubleVariableExpression"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&knowrob;DoubleAdd_7x8S">
+        <rdf:type rdf:resource="&knowrob;DoubleAdditionExpression"/>
+        <knowrob:summand rdf:resource="&knowrob;DoubleConst_7x8S"/>
+        <knowrob:summand rdf:resource="&knowrob;DoubleVar_7x8S"/>
+    </owl:NamedIndividual>
+ 
+    <owl:NamedIndividual rdf:about="&knowrob;DoubleSub_7x8S">
+        <rdf:type rdf:resource="&knowrob;DoubleSubtractionExpression"/>
+        <knowrob:minuend rdf:resource="&knowrob;DoubleVar_7x8S"/>
+        <knowrob:subtrahend rdf:resource="&knowrob;DoubleConst_7x8S"/>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="&knowrob;DoubleMul_7x8S">
+        <rdf:type rdf:resource="&knowrob;DoubleMultiplicationExpression"/>
+        <knowrob:factor rdf:resource="&knowrob;DoubleConst_U87s"/>
+        <knowrob:factor rdf:resource="&knowrob;DoubleAdd_7x8S"/>
+    </owl:NamedIndividual>
+
+</rdf:RDF>

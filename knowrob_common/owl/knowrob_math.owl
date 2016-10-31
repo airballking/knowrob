@@ -2,7 +2,6 @@
 
 
 <!DOCTYPE rdf:RDF [
-    <!ENTITY qudt "http://qudt.org/schema/qudt#" >
     <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
     <!ENTITY swrl "http://www.w3.org/2003/11/swrl#" >
     <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
@@ -21,27 +20,47 @@
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-     xmlns:qudt="http://qudt.org/schema/qudt#"
      xmlns:knowrob="http://knowrob.org/kb/knowrob.owl#">
     <owl:Ontology rdf:about="http://knowrob.org/kb/knowrob_math.owl"/>
 
+    <!-- property definitions for double expressions --> 
 
-    
-
-    <owl:ObjectProperty rdf:about="&knowrob;op1">
-        <rdfs:domain rdf:resource="&knowrob;MathExpression"/>
-        <rdfs:range rdf:resource="&knowrob;MathExpression"/>
-    </owl:ObjectProperty>
-
-    <owl:ObjectProperty rdf:about="&knowrob;op2">
-        <rdfs:domain rdf:resource="&knowrob;MathExpression"/>
-        <rdfs:range rdf:resource="&knowrob;MathExpression"/>
-    </owl:ObjectProperty>
-
-    <owl:ObjectProperty rdf:about="&knowrob;x">
-        <rdfs:domain rdf:resource="&knowrob;VectorExpression"/>
+    <owl:DatatypeProperty rdf:about="&knowrob;value">
+        <rdfs:domain rdf:resource="&knowrob;DoubleConstExpression"/>
+        <rdfs:range rdf:resource="&xsd;double"/>
+    </owl:DatatypeProperty>
+ 
+    <owl:ObjectProperty rdf:about="&knowrob;summand">
+        <rdfs:domain rdf:resource="&knowrob;DoubleAdditionExpression"/>
         <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
     </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;minuend">
+        <rdfs:domain rdf:resource="&knowrob;DoubleSubtractionExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;subtrahend">
+        <rdfs:domain rdf:resource="&knowrob;DoubleSubtractionExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;factor">
+        <rdfs:domain rdf:resource="&knowrob;DoubleMultiplicationExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;dividend">
+        <rdfs:domain rdf:resource="&knowrob;DoubleDivisionExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&knowrob;divisor">
+        <rdfs:domain rdf:resource="&knowrob;DoubleDivisionExpression"/>
+        <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
+    </owl:ObjectProperty>
+
+    <!-- property definitions for 3D vector expressions -->
 
     <owl:ObjectProperty rdf:about="&knowrob;x">
         <rdfs:domain rdf:resource="&knowrob;VectorExpression"/>
@@ -57,6 +76,8 @@
         <rdfs:domain rdf:resource="&knowrob;VectorExpression"/>
         <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
     </owl:ObjectProperty>
+
+    <!-- property definitions for 3D rotation expressions -->
 
     <owl:ObjectProperty rdf:about="&knowrob;x">
         <rdfs:domain rdf:resource="&knowrob;QuaternionExpression"/>
@@ -78,13 +99,6 @@
         <rdfs:range rdf:resource="&knowrob;DoubleExpression"/>
     </owl:ObjectProperty>
 
-    <owl:DatatypeProperty rdf:about="&knowrob;termvalue">
-        <rdfs:domain rdf:resource="&knowrob;MathExpression"/>
-        <rdfs:range rdf:resource="&xsd;double"/>
-    </owl:DatatypeProperty>
-    
-
-
     <!--
     ///////////////////////////////////////////////////////////////////////////////////////
     //
@@ -93,9 +107,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-
-
-    <!-- http://qudt.org/schema/qudt#Unit -->
+    <!-- top-level classes -->
 
     <rdf:Description rdf:about="&knowrob;MathExpression">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -103,14 +115,6 @@
 
     <rdf:Description rdf:about="&knowrob;DoubleExpression">
         <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
-    </rdf:Description>
-
-    <rdf:Description rdf:about="&knowrob;ConstDoubleExpression">
-        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
-    </rdf:Description>
-
-    <rdf:Description rdf:about="&knowrob;VariableDoubleExpression">
-        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
     </rdf:Description>
 
     <rdf:Description rdf:about="&knowrob;VectorExpression">
@@ -121,83 +125,80 @@
         <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
     </rdf:Description>
 
+    <!-- class definitions double expressions -->
+
+    <rdf:Description rdf:about="&knowrob;DoubleConstExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&knowrob;value"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;DoubleVariableExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;DoubleAdditionExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&knowrob;summand"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;DoubleSubtractionExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&knowrob;minuend"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&knowrob;subtrahend"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;DoubleMultiplicationExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&knowrob;factor"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="&knowrob;DoubleSubtractionExpression">
+        <rdfs:subClassOf rdf:resource="&knowrob;DoubleExpression"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&knowrob;dividend"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&knowrob;divisor"/>
+                <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </rdf:Description>
+
+    <!-- class definitions rotation expressions -->
+
     <rdf:Description rdf:about="&knowrob;QuaternionExpression">
         <rdfs:subClassOf rdf:resource="&knowrob;RotationExpression"/>
     </rdf:Description>
 
-
-    <rdf:Description rdf:about="&knowrob;AdditionTerm">
-        <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
-    </rdf:Description>
-
-    <rdf:Description rdf:about="&knowrob;SubtractionTerm">
-        <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
-    </rdf:Description>
-
-    <rdf:Description rdf:about="&knowrob;MultiplicationTerm">
-        <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
-    </rdf:Description>
-
-    <rdf:Description rdf:about="&knowrob;DivisionTerm">
-        <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
-    </rdf:Description>
-
-    <rdf:Description rdf:about="&knowrob;ValueTerm">
-        <rdfs:subClassOf rdf:resource="&knowrob;MathExpression"/>
-    </rdf:Description>
-
-
-    <!--
-    ///////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Individuals
-    //
-    ///////////////////////////////////////////////////////////////////////////////////////
-     -->
-
-
-    <owl:NamedIndividual rdf:about="&knowrob;Add_23_42">
-        <rdf:type rdf:resource="&knowrob;AdditionTerm"/>
-        <knowrob:op1 rdf:resource="&knowrob;Term23"/>
-        <knowrob:op2 rdf:resource="&knowrob;Term42"/>
-    </owl:NamedIndividual>
-
-    <owl:NamedIndividual rdf:about="&knowrob;Sub_76">
-        <rdf:type rdf:resource="&knowrob;SubtractionTerm"/>
-        <knowrob:op1 rdf:resource="&knowrob;Add_23_42"/>
-        <knowrob:op2 rdf:resource="&knowrob;Term76"/>
-    </owl:NamedIndividual>
-
-    <owl:NamedIndividual rdf:about="&knowrob;Mul_2">
-        <rdf:type rdf:resource="&knowrob;MultiplicationTerm"/>
-        <knowrob:op1 rdf:resource="&knowrob;Sub_76"/>
-        <knowrob:op2 rdf:resource="&knowrob;Term2"/>
-    </owl:NamedIndividual>
-    
-    
-    
-    
-    <owl:NamedIndividual rdf:about="&knowrob;Term23">
-        <rdf:type rdf:resource="&knowrob;ValueTerm"/>
-        <knowrob:termvalue rdf:datatype="&xsd;double">23.0</knowrob:termvalue>
-    </owl:NamedIndividual>
-    
-    <owl:NamedIndividual rdf:about="&knowrob;Term42">
-        <rdf:type rdf:resource="&knowrob;ValueTerm"/>
-        <knowrob:termvalue rdf:datatype="&xsd;double">142.0</knowrob:termvalue>
-    </owl:NamedIndividual>
-    
-    <owl:NamedIndividual rdf:about="&knowrob;Term76">
-        <rdf:type rdf:resource="&knowrob;ValueTerm"/>
-        <knowrob:termvalue rdf:datatype="&xsd;double">76.0</knowrob:termvalue>
-    </owl:NamedIndividual>
-    
-    <owl:NamedIndividual rdf:about="&knowrob;Term2">
-        <rdf:type rdf:resource="&knowrob;ValueTerm"/>
-        <knowrob:termvalue rdf:datatype="&xsd;double">2.0</knowrob:termvalue>
-    </owl:NamedIndividual>
-
-    
 </rdf:RDF>
 
 

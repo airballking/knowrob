@@ -32,9 +32,11 @@
 
 :- module(knowrob_math,
     [
-      eval_owl_term/2,
       quaternion_multiply/3,
-      parse_vector/2
+      parse_vector/2,
+      atomic_term/1,
+      print_bracket_term/2,
+      print_math_term/2
     ]).
 
 :- use_module(library('semweb/rdfs')).
@@ -43,7 +45,10 @@
 :- use_module(library('owl')).
 :- use_module(library('rdfs_computable')).
 
-:- rdf_meta(eval_owl_term(r,?)).
+:- rdf_meta
+         atomic_term(r),
+         print_bracket_term(r,?),
+         print_math_term(r,?).
 
 :- owl_parse('package://knowrob_common/owl/knowrob_math.owl').
 
@@ -52,56 +57,52 @@
 :- rdf_db:rdf_register_ns(knowrob, 'http://knowrob.org/kb/knowrob.owl#', [keep(true)]).
 
 
+atomic_term(Term) :-
+  nonvar(Term),
+  rdf_has(Term, rdf:type, knowrob:'DoubleConstExpression');
+  rdf_has(Term, rdf:type, knowrob:'DoubleVariableExpression').
 
+print_math_term(Term, String) :-
+  nonvar(Term),
+  rdf_has(Term, knowrob:value, Value),
+  strip_literal_type(Value, StrippedValue),
+  atom_string(StrippedValue, String).
 
-eval_owl_term(OWL, Val) :-
-    rdf_has(OWL, rdf:type, knowrob:'ValueTerm'),
-    rdf_has(OWL, knowrob:termvalue, literal(type(xsd:double,ValAtom))),
-    term_to_atom(Val, ValAtom).
+print_math_term(Term, String) :-
+  nonvar(Term),
+  rdf_has(Term, rdf:type, knowrob:'DoubleVariableExpression'),
+  atom_string("?", String).
 
+print_math_term(Term, String) :-
+  nonvar(Term),
+  rdf_has(Term, rdf:type, knowrob:'DoubleAdditionExpression'),
+  findall(Summand, (rdf_has(Term, knowrob:summand, Summand)), Summands),
+  Summands = [S1, S2],
+  print_math_term(S1, String1),
+  print_math_term(S2, String2),
+  atom_string(" + ", MidString),
+  string_concat(String1, MidString, TempString),
+  string_concat(TempString, String2, String).
 
-eval_owl_term(OWL, Val) :-
-    rdf_has(OWL, rdf:type, knowrob:'AdditionTerm'),
-    rdf_has(OWL, knowrob:op1, Op1),
-    rdf_has(OWL, knowrob:op2, Op2),
-    
-    eval_owl_term(Op1, Val1),
-    eval_owl_term(Op2, Val2),
-    
-    Val is Val1 + Val2.
-    
+print_math_term(Term, String) :-
+  nonvar(Term),
+  rdf_has(Term, rdf:type, knowrob:'DoubleMultiplicationExpression'),
+  findall(Factor, (rdf_has(Term, knowrob:factor, Factor)), Factors),
+  Factors = [F1, F2],
+  (atomic_term(F1) -> print_math_term(F1, String1) ; print_bracket_term(F1, String1)),
+  (atomic_term(F2) -> print_math_term(F2, String2) ; print_bracket_term(F2, String2)),
+  atom_string(" * ", MidString),
+  string_concat(String1, MidString, TempString),
+  string_concat(TempString, String2, String).
 
-eval_owl_term(OWL, Val) :-
-    rdf_has(OWL, rdf:type, knowrob:'SubtractionTerm'),
-    rdf_has(OWL, knowrob:op1, Op1),
-    rdf_has(OWL, knowrob:op2, Op2),
-    
-    eval_owl_term(Op1, Val1),
-    eval_owl_term(Op2, Val2),
-    
-    Val is Val1 - Val2.
-    
-    
-eval_owl_term(OWL, Val) :-
-    rdf_has(OWL, rdf:type, knowrob:'MultiplicationTerm'),
-    rdf_has(OWL, knowrob:op1, Op1),
-    rdf_has(OWL, knowrob:op2, Op2),
-    
-    eval_owl_term(Op1, Val1),
-    eval_owl_term(Op2, Val2),
-    
-    Val is Val1 * Val2.
+print_bracket_term(Term, String) :-
+  print_math_term(Term, MathString),
+  atom_string('(', OpenString),
+  atom_string(')', ClosingString),
+  string_concat(OpenString, MathString, TempString),
+  string_concat(TempString, ClosingString, String).
 
-    
-eval_owl_term(OWL, Val) :-
-    rdf_has(OWL, rdf:type, knowrob:'DivisionTerm'),
-    rdf_has(OWL, knowrob:op1, Op1),
-    rdf_has(OWL, knowrob:op2, Op2),
-    
-    eval_owl_term(Op1, Val1),
-    eval_owl_term(Op2, Val2),
-    
-    Val is Val1 / Val2.
+% TODO: Write concatenate list of strings into string predicate
 
 parse_vector([X|Y], [X|Y]).
 parse_vector(In, Numbers) :-
