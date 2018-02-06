@@ -81,6 +81,14 @@
 
 :- use_foreign_library('liburdf_parser.so').
 
+:- use_module(library('semweb/rdf_db')).
+:- use_module(library('semweb/rdfs')).
+:- use_module(library('semweb/owl_parser')).
+:- use_module(library('semweb/owl')).
+:- use_module(library('knowrob/owl')).
+
+:- rdf_db:rdf_register_ns(urdf, 'http://knowrob.org/kb/urdf.owl#', [keep(true)]).
+
 %% ros_param_get_string(+Key,-Value) is semidet.
 %
 % Read parameter from ROS parameter server.
@@ -355,3 +363,10 @@
 % limits of the safety controller of a joint. For
 % more details, visit:
 % http://wiki.ros.org/pr2_controller_manager/safety_limits
+%
+
+assert_links() :-
+  link_names(Links),
+  % for inspiration, see: https://stackoverflow.com/questions/7537804/executing-operation-for-each-list-element-in-swi-prolog-and-others
+
+
