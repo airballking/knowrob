@@ -30,6 +30,8 @@
 :- use_module('urdf_parser').
 :- use_module(library('roscpp')).
 
+:- owl_parser:owl_parse('package://knowrob_srdl/owl/urdf.owl').
+
 test(load_urdf_file_pr2) :-
   ros_package_path('knowrob_srdl', X),
   atom_concat(X, '/urdf/pr2_for_unit_tests.urdf', Filename),
@@ -396,5 +398,49 @@ test(link_collision_geometry_pr2_torso_lift_motor_screw_link) :-
 
 test(link_collision_geometry_pr2_base_laser_link, fail) :-
   link_collision_geometry(base_laser_link, 0, _).
+
+test(no_owl_robot_in_db, fail) :-
+  owl_individual_of(_, urdf:'Robot').
+
+test(no_owl_links_in_db, fail) :-
+  owl_individual_of(_, urdf:'Link').
+
+test(no_owl_joints_in_db, fail) :-
+  owl_individual_of(_, urdf:'Link').
+
+test(assert_pr2_robot) :-
+  assert_robot(_).
+
+test(one_owl_robot_in_db) :-
+  findall(Robot, owl_individual_of(Robot, urdf:'Robot'), Robots),
+  length(Robots, 1).
+
+test(robot_name_is_pr2) :-
+  owl_individual_of(Robot, urdf:'Robot'),
+  owl_has(Robot, urdf:'name', literal(type(xsd:string, pr2))), !.
+  
+test(all_pr2_links_are_there) :-
+  owl_individual_of(Robot, urdf:'Robot'),
+  owl_has(Robot, urdf:'name', literal(type(xsd:string, pr2))),!,
+  findall(Link, (owl_individual_of(Link, urdf:'Link'), owl_has(Robot, urdf:'hasLink', Link)), Links),
+  length(Links, 95).
+
+test(all_pr2_joints_are_there) :-
+  owl_individual_of(Robot, urdf:'Robot'),
+  owl_has(Robot, urdf:'name', literal(type(xsd:string, pr2))),!,
+  findall(Joint, (owl_individual_of(Joint, urdf:'Joint'), owl_has(Robot, urdf:'hasJoint', Joint)), Joints),
+  length(Joints, 94).
+
+test(all_pr2_joints_can_be_found_by_name) :-
+  joint_names(JointNames),
+  forall(member(JointName, JointNames), (
+    owl_individual_of(Joint, urdf:'Joint'),
+    owl_has(Joint, urdf:'name', literal(type(xsd:string, JointName))))).
+
+test(all_pr2_links_can_be_found_by_name) :-
+  link_names(LinkNames),
+  forall(member(LinkName, LinkNames), (
+    owl_individual_of(Link, urdf:'Link'),
+    owl_has(Link, urdf:'name', literal(type(xsd:string, LinkName))))).
 
 :- end_tests(urdf_parser).

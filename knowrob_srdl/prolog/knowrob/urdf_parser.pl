@@ -70,7 +70,12 @@
       joint_safety_lower_limit/2,
       joint_safety_upper_limit/2,
       joint_safety_kp/2,
-      joint_safety_kv/2
+      joint_safety_kv/2,
+      assert_urdf_file/2, 
+      assert_robot/1, 
+      assert_robot_individual/1,
+      assert_robot_links/1,
+      assert_robot_joints/1
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -365,8 +370,35 @@
 % http://wiki.ros.org/pr2_controller_manager/safety_limits
 %
 
-assert_links() :-
-  link_names(Links),
+assert_urdf_file(FileName, Robot) :-
+  load_urdf_file(FileName),
+  assert_robot(Robot).
+
+assert_robot(Robot) :-
+  assert_robot_individual(Robot),
+  assert_robot_links(Robot),
+  assert_robot_joints(Robot).
+
+assert_robot_individual(Robot) :-
+  owl_instance_from_class(urdf:'Robot', Robot),
+  robot_name(RobotName),
+  rdf_assert(Robot, urdf:'name', literal(type(xsd:string, RobotName))).
+
+assert_robot_links(Robot) :-
+  link_names(LinkNames),
+  forall(member(LinkName, LinkNames), (   
+    owl_instance_from_class(urdf:'Link', Link),
+    rdf_assert(Robot, urdf:'hasLink', Link),
+    rdf_assert(Link, urdf:'name', literal(type(xsd:string, LinkName))))).
+
+assert_robot_joints(Robot) :-
+  joint_names(JointNames),
+  forall(member(JointName, JointNames), (   
+    owl_instance_from_class(urdf:'Joint', Joint),
+    rdf_assert(Robot, urdf:'hasJoint', Joint),
+    rdf_assert(Joint, urdf:'name', literal(type(xsd:string, JointName))))).
+
+
   % for inspiration, see: https://stackoverflow.com/questions/7537804/executing-operation-for-each-list-element-in-swi-prolog-and-others
 
 
