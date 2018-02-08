@@ -425,10 +425,11 @@ test(all_pr2_links_are_there) :-
   findall(Link, (owl_individual_of(Link, urdf:'Link'), owl_has(Robot, urdf:'hasLink', Link)), Links),
   length(Links, 95).
 
-test(all_pr2_joints_are_there) :-
+test(all_pr2_joints_can_be_found_through_robot) :-
   owl_individual_of(Robot, urdf:'Robot'),
   owl_has(Robot, urdf:'name', literal(type(xsd:string, pr2))),!,
-  findall(Joint, (owl_individual_of(Joint, urdf:'Joint'), owl_has(Robot, urdf:'hasJoint', Joint)), Joints),
+  findall(Joint, (owl_has(Robot, urdf:'hasJoint', Joint), owl_individual_of(Joint, JointType), print(JointType), owl_subclass_of(JointType, urdf:'Joint')), Joints),
+  print(Joints),
   length(Joints, 94).
 
 test(all_pr2_joints_can_be_found_by_name) :-
@@ -442,5 +443,23 @@ test(all_pr2_links_can_be_found_by_name) :-
   forall(member(LinkName, LinkNames), (
     owl_individual_of(Link, urdf:'Link'),
     owl_has(Link, urdf:'name', literal(type(xsd:string, LinkName))))).
+
+test(urdf_owl_joint_type_prismatic) :-
+  urdf_owl_joint_type(prismatic, 'http://knowrob.org/kb/urdf.owl#PrismaticJoint').
+
+test(urdf_owl_joint_type_fixed) :-
+  urdf_owl_joint_type(fixed, 'http://knowrob.org/kb/urdf.owl#FixedJoint').
+
+test(urdf_owl_joint_type_revolute) :-
+  urdf_owl_joint_type(revolute, 'http://knowrob.org/kb/urdf.owl#RevoluteJoint').
+
+test(urdf_owl_joint_type_continuous) :-
+  urdf_owl_joint_type(continuous, 'http://knowrob.org/kb/urdf.owl#ContinuousJoint').
+ 
+test(urdf_owl_joint_type_floating) :-
+  urdf_owl_joint_type(floating, 'http://knowrob.org/kb/urdf.owl#FloatingJoint').
+
+test(urdf_owl_joint_type_planar) :-
+  urdf_owl_joint_type(planar, 'http://knowrob.org/kb/urdf.owl#PlanarJoint').
 
 :- end_tests(urdf_parser).

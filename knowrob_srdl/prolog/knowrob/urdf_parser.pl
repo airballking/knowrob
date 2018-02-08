@@ -71,6 +71,7 @@
       joint_safety_upper_limit/2,
       joint_safety_kp/2,
       joint_safety_kv/2,
+      urdf_owl_joint_type/2,
       assert_urdf_file/2, 
       assert_robot/1, 
       assert_robot_individual/1,
@@ -93,6 +94,11 @@
 :- use_module(library('knowrob/owl')).
 
 :- rdf_db:rdf_register_ns(urdf, 'http://knowrob.org/kb/urdf.owl#', [keep(true)]).
+
+:- rdf_meta
+        urdf_owl_joint_type(r,r),
+        assert_robot_links(r),
+        assert_robot_joints(r).
 
 %% ros_param_get_string(+Key,-Value) is semidet.
 %
@@ -370,6 +376,18 @@
 % http://wiki.ros.org/pr2_controller_manager/safety_limits
 %
 
+urdf_owl_joint_type(prismatic, urdf:'PrismaticJoint').
+
+urdf_owl_joint_type(fixed, urdf:'FixedJoint').
+
+urdf_owl_joint_type(revolute, urdf:'RevoluteJoint').
+
+urdf_owl_joint_type(continuous, urdf:'ContinuousJoint').
+
+urdf_owl_joint_type(planar, urdf:'PlanarJoint').
+
+urdf_owl_joint_type(floating, urdf:'FloatingJoint').
+
 assert_urdf_file(FileName, Robot) :-
   load_urdf_file(FileName),
   assert_robot(Robot).
@@ -394,7 +412,9 @@ assert_robot_links(Robot) :-
 assert_robot_joints(Robot) :-
   joint_names(JointNames),
   forall(member(JointName, JointNames), (   
-    owl_instance_from_class(urdf:'Joint', Joint),
+    joint_type(JointName, UrdfJointType),
+    urdf_owl_joint_type(UrdfJointType, OwlJointType),
+    owl_instance_from_class(OwlJointType, Joint),
     rdf_assert(Robot, urdf:'hasJoint', Joint),
     rdf_assert(Joint, urdf:'name', literal(type(xsd:string, JointName))))).
 
