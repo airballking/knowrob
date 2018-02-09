@@ -474,4 +474,21 @@ test(urdf_owl_joint_type_floating) :-
 test(urdf_owl_joint_type_planar) :-
   urdf_owl_joint_type(planar, 'http://knowrob.org/kb/urdf.owl#PlanarJoint').
 
+test(pr2_torso_lift_joint_has_correct_owl_type) :-
+  owl_individual_of(Joint, urdf:'PrismaticJoint'),
+  owl_has(Joint, urdf:'name', literal(type(xsd:string, torso_lift_joint))),!.
+
+test(pr2_l_shoulder_pan_joint_has_correct_owl_type) :-
+  owl_individual_of(Joint, urdf:'RevoluteJoint'),
+  owl_has(Joint, urdf:'name', literal(type(xsd:string, l_shoulder_pan_joint))),!.
+
+test(pr2_l_wrist_roll_joint_has_correct_owl_type) :-
+  owl_individual_of(Joint, urdf:'ContinuousJoint'),
+  owl_has(Joint, urdf:'name', literal(type(xsd:string, l_wrist_roll_joint))),!.
+
+test(pr2_head_plate_frame_joint_has_correct_owl_type) :-
+  owl_individual_of(Joint, urdf:'FixedJoint'),
+  owl_has(Joint, urdf:'name', literal(type(xsd:string, head_plate_frame_joint))),!.
+
+
 :- end_tests(urdf_parser).
