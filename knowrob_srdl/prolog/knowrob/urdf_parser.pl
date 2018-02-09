@@ -72,11 +72,16 @@
       joint_safety_kp/2,
       joint_safety_kv/2,
       urdf_owl_joint_type/2,
+      link_name/2,
+      joint_name/2,
       assert_urdf_file/2, 
       assert_robot/1, 
       assert_robot_individual/1,
       assert_robot_links/1,
-      assert_robot_joints/1
+      assert_robot_joints/1,
+      assert_joint_properties/1,
+      assert_child_link/1,
+      assert_parent_link/1
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -388,6 +393,14 @@ urdf_owl_joint_type(planar, urdf:'PlanarJoint').
 
 urdf_owl_joint_type(floating, urdf:'FloatingJoint').
 
+joint_name(Joint, Name) :-
+  owl_individual_of(Joint, urdf:'Joint'),
+  owl_has(Joint, urdf:'name', literal(type(xsd:string, Name))).
+
+link_name(Link, Name) :-
+  owl_individual_of(Link, urdf:'Link'),
+  owl_has(Link, urdf:'name', literal(type(xsd:string, Name))).
+
 assert_urdf_file(FileName, Robot) :-
   load_urdf_file(FileName),
   assert_robot(Robot).
@@ -395,7 +408,8 @@ assert_urdf_file(FileName, Robot) :-
 assert_robot(Robot) :-
   assert_robot_individual(Robot),
   assert_robot_links(Robot),
-  assert_robot_joints(Robot).
+  assert_robot_joints(Robot),
+  assert_joint_properties(Robot).
 
 assert_robot_individual(Robot) :-
   owl_instance_from_class(urdf:'Robot', Robot),
@@ -418,7 +432,23 @@ assert_robot_joints(Robot) :-
     rdf_assert(Robot, urdf:'hasJoint', Joint),
     rdf_assert(Joint, urdf:'name', literal(type(xsd:string, JointName))))).
 
+assert_joint_properties(Robot) :-
+  owl_individual_of(Robot, urdf:'Robot'),!,
+  forall(owl_has(Robot, urdf:'hasJoint', Joint), 
+    assert_joint_properties(Joint)).
 
-  % for inspiration, see: https://stackoverflow.com/questions/7537804/executing-operation-for-each-list-element-in-swi-prolog-and-others
+assert_joint_properties(Joint) :-
+  assert_parent_link(Joint),
+  assert_child_link(Joint).
 
+assert_parent_link(Joint) :-
+  joint_name(Joint, JointName),!, 
+  joint_parent_link(JointName, ParentLinkName),
+  link_name(ParentLink, ParentLinkName),!,
+  rdf_assert(Joint, urdf:'hasParentLink', ParentLink).
 
+assert_child_link(Joint) :-
+  joint_name(Joint, JointName),!,
+  joint_child_link(JointName, ChildLinkName),
+  link_name(ChildLink, ChildLinkName),!,
+  rdf_assert(Joint, urdf:'hasChildLink', ChildLink).

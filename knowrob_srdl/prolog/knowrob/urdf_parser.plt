@@ -490,5 +490,36 @@ test(pr2_head_plate_frame_joint_has_correct_owl_type) :-
   owl_individual_of(Joint, urdf:'FixedJoint'),
   owl_has(Joint, urdf:'name', literal(type(xsd:string, head_plate_frame_joint))),!.
 
+test(joint_name_torso_lift_joint) :-
+  joint_name(_, torso_lift_joint),!.
+
+test(joint_name_foo, fail) :-
+  joint_name(_, foo).
+
+test(link_name_l_gripper_tool_frame) :-
+  link_name(_, l_gripper_tool_frame),!.
+
+test(link_name_bar, fail) :-
+  link_name(_, bar).
+
+test(owl_child_link_pr2_torso_lift_joint) :-
+  joint_name(Joint, torso_lift_joint),
+  owl_has(Joint, urdf:'hasChildLink', ChildLink),
+  link_name(ChildLink, torso_lift_link), !.
+
+test(owl_child_link_pr2_l_shoulder_pan_joint) :-
+  joint_name(Joint, l_shoulder_pan_joint),
+  owl_has(Joint, urdf:'hasChildLink', ChildLink),
+  link_name(ChildLink, l_shoulder_pan_link), !.
+
+test(owl_parent_link_pr2_r_elbow_flex_joint) :-
+  joint_name(Joint, r_elbow_flex_joint),
+  owl_has(Joint, urdf:'hasParentLink', Link),
+  link_name(Link, r_upper_arm_link),!.
+
+test(owl_parent_link_pr2_head_tilt_joint) :-
+  joint_name(Joint, head_tilt_joint),
+  owl_has(Joint, urdf:'hasParentLink', Link),
+  link_name(Link, head_pan_link),!.
 
 :- end_tests(urdf_parser).
