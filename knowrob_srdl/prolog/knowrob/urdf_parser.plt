@@ -31,6 +31,7 @@
 :- use_module(library('roscpp')).
 
 :- owl_parser:owl_parse('package://knowrob_srdl/owl/urdf.owl').
+:- rdf_db:rdf_register_ns(urdf, 'http://knowrob.org/kb/urdf.owl#', [keep(true)]).
 
 test(load_urdf_file_pr2) :-
   ros_package_path('knowrob_srdl', X),
@@ -419,18 +420,29 @@ test(robot_name_is_pr2) :-
   owl_individual_of(Robot, urdf:'Robot'),
   owl_has(Robot, urdf:'name', literal(type(xsd:string, pr2))), !.
   
-test(all_pr2_links_are_there) :-
+test(all_pr2_links_can_be_found_through_robot) :-
   owl_individual_of(Robot, urdf:'Robot'),
   owl_has(Robot, urdf:'name', literal(type(xsd:string, pr2))),!,
-  findall(Link, (owl_individual_of(Link, urdf:'Link'), owl_has(Robot, urdf:'hasLink', Link)), Links),
+  findall(Link, (owl_has(Robot, urdf:'hasLink', Link)), Links),
   length(Links, 95).
+
+test(all_pr2_links_are_of_type_link) :-
+  owl_individual_of(Robot, urdf:'Robot'),
+  owl_has(Robot, urdf:'name', literal(type(xsd:string, pr2))),!,
+  findall(Link, (owl_has(Robot, urdf:'hasLink', Link)), Links),
+  forall(member(Link, Links), owl_individual_of(Link, urdf:'Link')).
 
 test(all_pr2_joints_can_be_found_through_robot) :-
   owl_individual_of(Robot, urdf:'Robot'),
   owl_has(Robot, urdf:'name', literal(type(xsd:string, pr2))),!,
-  findall(Joint, (owl_has(Robot, urdf:'hasJoint', Joint), owl_individual_of(Joint, JointType), print(JointType), owl_subclass_of(JointType, urdf:'Joint')), Joints),
-  print(Joints),
+  findall(Joint, (owl_has(Robot, urdf:'hasJoint', Joint)), Joints),
   length(Joints, 94).
+
+test(all_pr2_joints_are_of_type_joint) :-
+  owl_individual_of(Robot, urdf:'Robot'),
+  owl_has(Robot, urdf:'name', literal(type(xsd:string, pr2))),!,
+  findall(Joint, (owl_has(Robot, urdf:'hasJoint', Joint)), Joints),
+  forall(member(Joint, Joints), owl_individual_of(Joint, urdf:'Joint')).
 
 test(all_pr2_joints_can_be_found_by_name) :-
   joint_names(JointNames),

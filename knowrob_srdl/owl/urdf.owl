@@ -6,7 +6,7 @@
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="http://knowrob.org/kb/urdf"/>
+    <owl:Ontology rdf:about="http://knowrob.org/kb/urdf.owl"/>
     
 
 
@@ -21,44 +21,44 @@
     
 
 
-    <!-- http://knowrob.org/kb/urdf#hasJoint -->
+    <!-- http://knowrob.org/kb/urdf.owl#hasJoint -->
 
-    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf#hasJoint">
+    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#hasJoint">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf#isJointOf"/>
-        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf#Robot"/>
-        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf#Joint"/>
+        <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#isJointOf"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Robot"/>
+        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#hasLink -->
+    <!-- http://knowrob.org/kb/urdf.owl#hasLink -->
 
-    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf#hasLink">
+    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#hasLink">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf#isLinkOf"/>
-        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf#Robot"/>
-        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf#Link"/>
+        <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#isLinkOf"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Robot"/>
+        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#isJointOf -->
+    <!-- http://knowrob.org/kb/urdf.owl#isJointOf -->
 
-    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf#isJointOf">
+    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isJointOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf#Joint"/>
-        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf#Robot"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Robot"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#isLinkOf -->
+    <!-- http://knowrob.org/kb/urdf.owl#isLinkOf -->
 
-    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf#isLinkOf">
+    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isLinkOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf#Link"/>
-        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf#Robot"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
+        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Robot"/>
     </owl:ObjectProperty>
     
 
@@ -74,11 +74,11 @@
     
 
 
-    <!-- http://knowrob.org/kb/urdf#name -->
+    <!-- http://knowrob.org/kb/urdf.owl#name -->
 
-    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf#name">
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#name">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf#UrdfConcept"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
     
@@ -95,81 +95,81 @@
     
 
 
-    <!-- http://knowrob.org/kb/urdf#ContinuousJoint -->
+    <!-- http://knowrob.org/kb/urdf.owl#ContinuousJoint -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#ContinuousJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf#Joint"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#FixedJoint -->
+    <!-- http://knowrob.org/kb/urdf.owl#FixedJoint -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#FixedJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf#Joint"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#FixedJoint">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#FloatingJoint -->
+    <!-- http://knowrob.org/kb/urdf.owl#FloatingJoint -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#FloatingJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf#Joint"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#FloatingJoint">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#Joint -->
+    <!-- http://knowrob.org/kb/urdf.owl#Joint -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#Joint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf#UrdfConcept"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#Joint">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#Link -->
+    <!-- http://knowrob.org/kb/urdf.owl#Link -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#Link">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf#UrdfConcept"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#Link">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#PlanarJoint -->
+    <!-- http://knowrob.org/kb/urdf.owl#PlanarJoint -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#PlanarJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf#Joint"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#PlanarJoint">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#PrismaticJoint -->
+    <!-- http://knowrob.org/kb/urdf.owl#PrismaticJoint -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#PrismaticJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf#Joint"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#RevoluteJoint -->
+    <!-- http://knowrob.org/kb/urdf.owl#RevoluteJoint -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#RevoluteJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf#Joint"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#Robot -->
+    <!-- http://knowrob.org/kb/urdf.owl#Robot -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#Robot">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf#UrdfConcept"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#Robot">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf#UrdfConcept -->
+    <!-- http://knowrob.org/kb/urdf.owl#UrdfConcept -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf#UrdfConcept"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
     
 
 
@@ -184,20 +184,20 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf#ContinuousJoint"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf#FixedJoint"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf#FloatingJoint"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf#PlanarJoint"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf#PrismaticJoint"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf#RevoluteJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#FixedJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#FloatingJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PlanarJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf#Joint"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf#Link"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf#Robot"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Joint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Link"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Robot"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>
