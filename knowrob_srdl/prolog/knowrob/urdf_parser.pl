@@ -81,7 +81,8 @@
       assert_robot_joints/1,
       assert_joint_properties/1,
       assert_child_link/1,
-      assert_parent_link/1
+      assert_parent_link/1,
+      assert_axis/1
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -439,7 +440,8 @@ assert_joint_properties(Robot) :-
 
 assert_joint_properties(Joint) :-
   assert_parent_link(Joint),
-  assert_child_link(Joint).
+  assert_child_link(Joint),
+  assert_axis(Joint).
 
 assert_parent_link(Joint) :-
   joint_name(Joint, JointName),!, 
@@ -452,3 +454,13 @@ assert_child_link(Joint) :-
   joint_child_link(JointName, ChildLinkName),
   link_name(ChildLink, ChildLinkName),!,
   rdf_assert(Joint, urdf:'hasChildLink', ChildLink).
+
+assert_axis(Joint) :-
+  joint_name(Joint, JointName),
+  owl_individual_of(Joint, urdf:'JointWithAxis'),!,
+  joint(JointName, [X,Y,Z]),
+  owl_instance_from_class(urdf:'Vector3d', Axis),
+  rdf_assert(Joint, urdf:'hasAxis', Axis),
+  rdf_assert(Axis, urdf:'x', literal(type(xsd:double, X))),
+  rdf_assert(Axis, urdf:'y', literal(type(xsd:double, Y))),
+  rdf_assert(Axis, urdf:'z', literal(type(xsd:double, Z))).
