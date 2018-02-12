@@ -329,7 +329,6 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
-        <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithLimits"/>
     </owl:Class>
     
 
@@ -393,7 +392,7 @@
     <!-- http://knowrob.org/kb/urdf.owl#PlanarJoint -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#PlanarJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
     </owl:Class>
     
 
@@ -464,10 +463,17 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#JointWithLimits"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PlanarJoint"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#FixedJoint"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#FloatingJoint"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PlanarJoint"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
