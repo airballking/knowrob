@@ -456,11 +456,12 @@ assert_child_link(Joint) :-
   rdf_assert(Joint, urdf:'hasChildLink', ChildLink).
 
 assert_axis(Joint) :-
-  joint_name(Joint, JointName),
-  owl_individual_of(Joint, urdf:'JointWithAxis'),!,
-  joint(JointName, [X,Y,Z]),
-  owl_instance_from_class(urdf:'Vector3d', Axis),
-  rdf_assert(Joint, urdf:'hasAxis', Axis),
-  rdf_assert(Axis, urdf:'x', literal(type(xsd:double, X))),
-  rdf_assert(Axis, urdf:'y', literal(type(xsd:double, Y))),
-  rdf_assert(Axis, urdf:'z', literal(type(xsd:double, Z))).
+  joint_name(Joint, JointName),!,
+  ( (joint_axis(JointName, [X,Y,Z]),
+     owl_individual_of(Joint, urdf:'JointWithAxis'),!) -> 
+    (owl_instance_from_class(urdf:'Vector3d', Axis),
+     rdf_assert(Joint, urdf:'hasAxis', Axis),
+     rdf_assert(Axis, urdf:'x', literal(type(xsd:double, X))),
+     rdf_assert(Axis, urdf:'y', literal(type(xsd:double, Y))),
+     rdf_assert(Axis, urdf:'z', literal(type(xsd:double, Z)))) ;
+    (true)).

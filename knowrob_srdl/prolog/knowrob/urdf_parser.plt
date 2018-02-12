@@ -522,4 +522,36 @@ test(owl_parent_link_pr2_head_tilt_joint) :-
   owl_has(Joint, urdf:'hasParentLink', Link),
   link_name(Link, head_pan_link),!.
 
+test(owl_axis_fl_caster_rotation_joint) :-
+  joint_name(Joint, fl_caster_rotation_joint),
+  owl_has(Joint, urdf:'hasAxis', Axis),
+  owl_has(Axis, urdf:'x', literal(type(xsd:double, 0.0))),
+  owl_has(Axis, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Axis, urdf:'z', literal(type(xsd:double, 1.0))),!.
+
+test(owl_axis_r_shoulder_lift_joint) :-
+  joint_name(Joint, r_shoulder_lift_joint),
+  owl_has(Joint, urdf:'hasAxis', Axis),
+  owl_has(Axis, urdf:'x', literal(type(xsd:double, 0.0))),
+  owl_has(Axis, urdf:'y', literal(type(xsd:double, 1.0))),
+  owl_has(Axis, urdf:'z', literal(type(xsd:double, 0.0))),!.
+
+test(owl_axis_r_forearm_roll_joint) :-
+  joint_name(Joint, r_forearm_roll_joint),
+  owl_has(Joint, urdf:'hasAxis', Axis),
+  owl_has(Axis, urdf:'x', literal(type(xsd:double, 1.0))),
+  owl_has(Axis, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Axis, urdf:'z', literal(type(xsd:double, 0.0))),!.
+
+test(owl_axis_r_gripper_motor_slider_joint) :-
+  joint_name(Joint, r_gripper_motor_slider_joint),
+  owl_has(Joint, urdf:'hasAxis', Axis),
+  owl_has(Axis, urdf:'x', literal(type(xsd:double, 1.0))),
+  owl_has(Axis, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Axis, urdf:'z', literal(type(xsd:double, 0.0))),!.
+
+test(owl_axis_laser_tilt_joint, fail) :-
+  joint_name(Joint, laser_tilt_joint),
+  owl_has(Joint, urdf:'hasAxis', _).
+
 :- end_tests(urdf_parser).
