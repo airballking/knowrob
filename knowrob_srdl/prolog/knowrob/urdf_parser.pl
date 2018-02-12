@@ -439,9 +439,10 @@ assert_joint_properties(Robot) :-
     assert_joint_properties(Joint)).
 
 assert_joint_properties(Joint) :-
+  owl_individual_of(Joint, urdf:'Joint'),!,
   assert_parent_link(Joint),
   assert_child_link(Joint),
-  assert_axis(Joint).
+  ((owl_individual_of(Joint, urdf:'JointWithAxis')) -> (assert_axis(Joint)) ; (true)).
 
 assert_parent_link(Joint) :-
   joint_name(Joint, JointName),!, 
@@ -457,11 +458,10 @@ assert_child_link(Joint) :-
 
 assert_axis(Joint) :-
   joint_name(Joint, JointName),!,
-  ( (joint_axis(JointName, [X,Y,Z]),
-     owl_individual_of(Joint, urdf:'JointWithAxis'),!) -> 
-    (owl_instance_from_class(urdf:'Vector3d', Axis),
-     rdf_assert(Joint, urdf:'hasAxis', Axis),
-     rdf_assert(Axis, urdf:'x', literal(type(xsd:double, X))),
-     rdf_assert(Axis, urdf:'y', literal(type(xsd:double, Y))),
-     rdf_assert(Axis, urdf:'z', literal(type(xsd:double, Z)))) ;
-    (true)).
+  joint_axis(JointName, [X,Y,Z]),
+  owl_individual_of(Joint, urdf:'JointWithAxis'),!,
+  owl_instance_from_class(urdf:'Vector3d', Axis),
+  rdf_assert(Joint, urdf:'hasAxis', Axis),
+  rdf_assert(Axis, urdf:'x', literal(type(xsd:double, X))),
+  rdf_assert(Axis, urdf:'y', literal(type(xsd:double, Y))),
+  rdf_assert(Axis, urdf:'z', literal(type(xsd:double, Z))).
