@@ -224,6 +224,26 @@
     
 
 
+    <!-- http://knowrob.org/kb/urdf.owl#effortLimit -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#effortLimit">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#lowerPosLimit -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#lowerPosLimit">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://knowrob.org/kb/urdf.owl#name -->
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#name">
@@ -238,6 +258,26 @@
             </owl:Class>
         </rdfs:domain>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#upperPosLimit -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#upperPosLimit">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#velocityLimit -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#velocityLimit">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
 
@@ -328,7 +368,9 @@
     <!-- http://knowrob.org/kb/urdf.owl#ContinuousJoint -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A revolute joint without lower and upper position limits.</rdfs:comment>
     </owl:Class>
     
 
@@ -369,14 +411,26 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#JointWithAxis">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Class joints with each one meaningful joint axis.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://knowrob.org/kb/urdf.owl#JointWithLimits -->
+    <!-- http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#JointWithLimits">
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
+        <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#PlanarJoint"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Class of joints with each of meaningful velocity and effort limit.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#JointWithPositionLimits -->
+
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Class of joints with each one meaningful lower and upper position limit.</rdfs:comment>
     </owl:Class>
     
 
@@ -393,6 +447,7 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#PlanarJoint">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A planar joint is basically a 3-DOF joint: Trans-X, Trans-Y, and Rot-Z. The joint axis is normal is the surface normal.</rdfs:comment>
     </owl:Class>
     
 
@@ -400,7 +455,7 @@
     <!-- http://knowrob.org/kb/urdf.owl#PrismaticJoint -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithLimits"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
         <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#RevoluteJoint"/>
     </owl:Class>
     
@@ -417,7 +472,7 @@
     <!-- http://knowrob.org/kb/urdf.owl#RevoluteJoint -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithLimits"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
     </owl:Class>
     
 
@@ -460,14 +515,6 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#JointWithLimits"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PlanarJoint"/>
-        </owl:members>
-    </rdf:Description>
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
