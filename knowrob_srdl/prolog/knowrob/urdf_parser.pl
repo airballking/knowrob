@@ -82,7 +82,8 @@
       assert_joint_properties/1,
       assert_child_link/1,
       assert_parent_link/1,
-      assert_axis/1
+      assert_axis/1,
+      assert_pos_limits/1
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -442,7 +443,8 @@ assert_joint_properties(Joint) :-
   owl_individual_of(Joint, urdf:'Joint'),!,
   assert_parent_link(Joint),
   assert_child_link(Joint),
-  ((owl_individual_of(Joint, urdf:'JointWithAxis')) -> (assert_axis(Joint)) ; (true)).
+  ((owl_individual_of(Joint, urdf:'JointWithAxis')) -> (assert_axis(Joint)) ; (true)),
+  ((owl_individual_of(Joint, urdf:'JointWithPositionLimits')) -> (assert_pos_limits(Joint)) ; (true)).
 
 assert_parent_link(Joint) :-
   joint_name(Joint, JointName),!, 
@@ -465,3 +467,11 @@ assert_axis(Joint) :-
   rdf_assert(Axis, urdf:'x', literal(type(xsd:double, X))),
   rdf_assert(Axis, urdf:'y', literal(type(xsd:double, Y))),
   rdf_assert(Axis, urdf:'z', literal(type(xsd:double, Z))).
+
+assert_pos_limits(Joint) :-
+  joint_name(Joint, JointName),!,
+  joint_lower_pos_limit(JointName, Lower),
+  joint_upper_pos_limit(JointName, Upper),
+  owl_individual_of(Joint, urdf:'JointWithPositionLimits'),!,
+  rdf_assert(Joint, urdf:'lowerPosLimit', literal(type(xsd:double, Lower))),
+  rdf_assert(Joint, urdf:'upperPosLimit', literal(type(xsd:double, Upper))).
