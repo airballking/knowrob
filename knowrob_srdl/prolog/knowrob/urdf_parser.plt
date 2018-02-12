@@ -554,20 +554,34 @@ test(owl_axis_laser_tilt_joint, fail) :-
   joint_name(Joint, laser_tilt_joint),
   owl_has(Joint, urdf:'hasAxis', _).
 
-test(owl_pos_limit_l_elbow_flex_joint) :-
+test(owl_pos_limits_l_elbow_flex_joint) :-
   joint_name(Joint, l_elbow_flex_joint),
   owl_has(Joint, urdf:'lowerPosLimit', literal(type(xsd:double, -2.3213))),
   owl_has(Joint, urdf:'upperPosLimit', literal(type(xsd:double, 0.0))),!.
 
-test(owl_pos_limit_l_wrist_roll_joint, fail) :-
+test(owl_pos_limits_l_wrist_roll_joint, fail) :-
   joint_name(Joint, l_wrist_roll_joint),
   owl_has(Joint, urdf:'lowerPosLimit', _),
   owl_has(Joint, urdf:'upperPosLimit', _).
 
-test(owl_pos_limit_torso_lift_joint) :-
+test(owl_pos_limits_torso_lift_joint) :-
   joint_name(Joint, torso_lift_joint),
   owl_has(Joint, urdf:'lowerPosLimit', literal(type(xsd:double, 0.0))),
   owl_has(Joint, urdf:'upperPosLimit', literal(type(xsd:double, 0.33))),!.
 
+test(owl_kin_limits_r_shoulder_lift_joint) :-
+  joint_name(Joint, r_shoulder_lift_joint),
+  owl_has(Joint, urdf:'velocityLimit', literal(type(xsd:double, 2.082))),
+  owl_has(Joint, urdf:'effortLimit', literal(type(xsd:double, 30.0))),!.
+
+test(owl_kin_limits_r_upper_arm_joint, fail) :-
+  joint_name(Joint, r_upper_arm_joint),
+  owl_has(Joint, urdf:'velocityLimit', _),
+  owl_has(Joint, urdf:'effortLimit', _).
+
+test(owl_kin_limits_head_pan_joint) :-
+  joint_name(Joint, head_pan_joint),
+  owl_has(Joint, urdf:'velocityLimit', literal(type(xsd:double, 6))),
+  owl_has(Joint, urdf:'effortLimit', literal(type(xsd:double, 2.645))).
 
 :- end_tests(urdf_parser).

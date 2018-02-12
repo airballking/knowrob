@@ -83,7 +83,8 @@
       assert_child_link/1,
       assert_parent_link/1,
       assert_axis/1,
-      assert_pos_limits/1
+      assert_pos_limits/1,
+      assert_kin_limits/1
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -444,6 +445,7 @@ assert_joint_properties(Joint) :-
   assert_parent_link(Joint),
   assert_child_link(Joint),
   ((owl_individual_of(Joint, urdf:'JointWithAxis')) -> (assert_axis(Joint)) ; (true)),
+  ((owl_individual_of(Joint, urdf:'JointWithKinematicLimits')) -> (assert_kin_limits(Joint)) ; (true)),
   ((owl_individual_of(Joint, urdf:'JointWithPositionLimits')) -> (assert_pos_limits(Joint)) ; (true)).
 
 assert_parent_link(Joint) :-
@@ -475,3 +477,13 @@ assert_pos_limits(Joint) :-
   owl_individual_of(Joint, urdf:'JointWithPositionLimits'),!,
   rdf_assert(Joint, urdf:'lowerPosLimit', literal(type(xsd:double, Lower))),
   rdf_assert(Joint, urdf:'upperPosLimit', literal(type(xsd:double, Upper))).
+
+assert_kin_limits(Joint) :-
+  joint_name(Joint, JointName),!,
+  owl_individual_of(Joint, urdf:'JointWithKinematicLimits'),!,
+  print(JointName),
+  print(Joint),
+  joint_velocity_limit(JointName, VelocityLimit),
+  joint_effort_limit(JointName, EffortLimit),
+  rdf_assert(Joint, urdf:'velocityLimit', literal(type(xsd:double, VelocityLimit))),
+  rdf_assert(Joint, urdf:'effortLimit', literal(type(xsd:double, EffortLimit))).
