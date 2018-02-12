@@ -328,7 +328,8 @@
     <!-- http://knowrob.org/kb/urdf.owl#ContinuousJoint -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
+        <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithLimits"/>
     </owl:Class>
     
 
@@ -368,20 +369,7 @@
     <!-- http://knowrob.org/kb/urdf.owl#JointWithAxis -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#JointWithAxis">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Joint"/>
-                    <owl:Class>
-                        <owl:unionOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint"/>
-                            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint"/>
-                            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint"/>
-                        </owl:unionOf>
-                    </owl:Class>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:Class>
     
 
@@ -389,19 +377,7 @@
     <!-- http://knowrob.org/kb/urdf.owl#JointWithLimits -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#JointWithLimits">
-        <owl:equivalentClass>
-            <owl:Class>
-                <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Joint"/>
-                    <owl:Class>
-                        <owl:unionOf rdf:parseType="Collection">
-                            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint"/>
-                            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint"/>
-                        </owl:unionOf>
-                    </owl:Class>
-                </owl:intersectionOf>
-            </owl:Class>
-        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
     </owl:Class>
     
 
@@ -425,7 +401,8 @@
     <!-- http://knowrob.org/kb/urdf.owl#PrismaticJoint -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithLimits"/>
+        <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#RevoluteJoint"/>
     </owl:Class>
     
 
@@ -441,7 +418,7 @@
     <!-- http://knowrob.org/kb/urdf.owl#RevoluteJoint -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithLimits"/>
     </owl:Class>
     
 
@@ -487,12 +464,10 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#FixedJoint"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#FloatingJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PlanarJoint"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint"/>
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint"/>
         </owl:members>
     </rdf:Description>
     <rdf:Description>
