@@ -195,8 +195,20 @@ test(joint_upper_limit_pr2_r_forearm_roll_joint, fail) :-
 test(joint_vel_limit_pr2_r_gripper_joint) :-
   joint_velocity_limit(r_gripper_joint, 0.2).
 
+test(joint_vel_limit_pr2_l_gripper_motor_screw_joint, fail) :-
+  %% NOTE: This is a case of an incorrect urdf. l_gripper_motor_screw_joint
+  %% is modeled as a continuous joint, but has not limits specified. This
+  %% test makes sure that we fail gracely. There used to be a null pointer exception..
+  joint_velocity_limit(l_gripper_motor_screw_joint, _).
+
 test(joint_effort_limit_pr2_head_pan_joint) :-
   joint_effort_limit(head_pan_joint, 6.0).
+
+test(joint_effort_limit_pr2_l_gripper_motor_screw_joint, fail) :-
+  %% NOTE: This is a case of an incorrect urdf. l_gripper_motor_screw_joint
+  %% is modeled as a continuous joint, but has not limits specified. This
+  %% test makes sure that we fail gracely. There used to be a null pointer exception..
+  joint_effort_limit(l_gripper_motor_screw_joint, _).
 
 test(joint_calibration_rising_pr2_fl_caster_rotation_joint) :-
   joint_calibration_rising(fl_caster_rotation_joint, -0.785398163397).

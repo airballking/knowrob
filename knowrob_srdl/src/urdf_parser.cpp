@@ -522,18 +522,6 @@ bool joint_has_pos_limits(urdf::JointConstSharedPtr joint) {
     return joint->type == urdf::Joint::PRISMATIC || joint->type == urdf::Joint::REVOLUTE;
 }
 
-bool joint_has_vel_limit(urdf::JointConstSharedPtr joint) {
-    return joint->type == urdf::Joint::REVOLUTE ||
-           joint->type == urdf::Joint::PRISMATIC ||
-           joint->type == urdf::Joint::CONTINUOUS;
-}
-
-bool joint_has_effort_limit(urdf::JointConstSharedPtr joint) {
-    // joints that have velocity limits should also have effort limits
-    return joint_has_vel_limit(joint);
-}
-
-
 PREDICATE(joint_names, 1) {
     try {
         PlTail names(PL_A1);
@@ -673,7 +661,7 @@ PREDICATE(joint_velocity_limit, 2) {
     try {
         std::string joint_name((char*) PL_A1);
         urdf::JointConstSharedPtr joint = get_joint(joint_name);
-        if (!joint_has_vel_limit(joint))
+        if (!joint->limits.get())
             return false;
         PL_A2 = joint->limits->velocity;
         return true;
@@ -687,7 +675,7 @@ PREDICATE(joint_effort_limit, 2) {
     try {
         std::string joint_name((char*) PL_A1);
         urdf::JointConstSharedPtr joint = get_joint(joint_name);
-        if (!joint_has_effort_limit(joint))
+        if (!joint->limits.get())
             return false;
         PL_A2 = joint->limits->effort;
         return true;
