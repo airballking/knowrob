@@ -609,4 +609,19 @@ test(owl_origin_base_bellow_joint) :-
   owl_has(Orientation, urdf:'z', literal(type(xsd:double, 0.0))),
   owl_has(Orientation, urdf:'w', literal(type(xsd:double, 1.0))),!.
 
+test(owl_dynamics_fr_caster_r_wheel_joint) :-
+  joint_name(Joint, fr_caster_r_wheel_joint),
+  owl_has(Joint, urdf:'damping', literal(type(xsd:double, 1.0))),
+  owl_has(Joint, urdf:'friction', literal(type(xsd:double, 0.0))),!.
+
+test(owl_dynamics_torso_lift_joint) :-
+  joint_name(Joint, torso_lift_joint),
+  owl_has(Joint, urdf:'damping', literal(type(xsd:double, 20000.0))),
+  owl_has(Joint, urdf:'friction', literal(type(xsd:double, 0.0))),!.
+
+test(owl_dynamics_r_forearm_cam_optical_frame_joint, fail) :-
+  joint_name(Joint, r_forearm_cam_optical_frame_joint),
+  owl_has(Joint, urdf:'damping', _),
+  owl_has(Joint, urdf:'friction', _).
+
 :- end_tests(urdf_parser).

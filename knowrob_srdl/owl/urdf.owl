@@ -224,9 +224,29 @@
     
 
 
+    <!-- http://knowrob.org/kb/urdf.owl#damping -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#damping">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://knowrob.org/kb/urdf.owl#effortLimit -->
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#effortLimit">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#friction -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#friction">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>

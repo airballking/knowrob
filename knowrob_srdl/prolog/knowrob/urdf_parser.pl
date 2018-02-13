@@ -75,6 +75,7 @@
       link_name/2,
       joint_name/2,
       joint_has_kin_limits/1,
+      joint_has_dynamics/1,
       assert_urdf_file/2, 
       assert_robot/1, 
       assert_robot_individual/1,
@@ -85,7 +86,9 @@
       assert_parent_link/1,
       assert_axis/1,
       assert_pos_limits/1,
-      assert_kin_limits/1
+      assert_kin_limits/1,
+      assert_origin/1,
+      assert_dynamics/1
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -442,6 +445,11 @@ joint_has_kin_limits(Joint) :-
   joint_velocity_limit(JointName, _),
   joint_effort_limit(JointName, _).
 
+joint_has_dynamics(Joint) :-
+  joint_name(Joint, JointName),
+  joint_dynamics_damping(JointName, _),
+  joint_dynamics_friction(JointName, _).
+
 assert_joint_properties(Robot) :-
   owl_individual_of(Robot, urdf:'Robot'),!,
   forall(owl_has(Robot, urdf:'hasJoint', Joint), 
@@ -454,7 +462,8 @@ assert_joint_properties(Joint) :-
   assert_origin(Joint),
   ((owl_individual_of(Joint, urdf:'JointWithAxis')) -> (assert_axis(Joint)) ; (true)),
   ((joint_has_kin_limits(Joint)) -> (assert_kin_limits(Joint)) ; (true)),
-  ((owl_individual_of(Joint, urdf:'JointWithPositionLimits')) -> (assert_pos_limits(Joint)) ; (true)).
+  ((owl_individual_of(Joint, urdf:'JointWithPositionLimits')) -> (assert_pos_limits(Joint)) ; (true)),
+  ((joint_has_dynamics(Joint)) -> (assert_dynamics(Joint)) ; (true)).
 
 assert_parent_link(Joint) :-
   joint_name(Joint, JointName),!, 
@@ -510,3 +519,10 @@ assert_origin(Joint) :-
   rdf_assert(Origin, urdf:'hasPosition', Position),
   rdf_assert(Origin, urdf:'hasOrientation', Orientation),
   rdf_assert(Joint, urdf:'hasOrigin', Origin).
+
+assert_dynamics(Joint) :-
+  joint_name(Joint, JointName),!,
+  joint_dynamics_friction(JointName, Friction),
+  joint_dynamics_damping(JointName, Damping),
+  rdf_assert(Joint, urdf:'damping', literal(type(xsd:double, Damping))),
+  rdf_assert(Joint, urdf:'friction', literal(type(xsd:double, Friction))).
