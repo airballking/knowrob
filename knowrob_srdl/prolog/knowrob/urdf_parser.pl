@@ -74,6 +74,7 @@
       urdf_owl_joint_type/2,
       link_name/2,
       joint_name/2,
+      joint_has_kin_limits/1,
       assert_urdf_file/2, 
       assert_robot/1, 
       assert_robot_individual/1,
@@ -435,6 +436,12 @@ assert_robot_joints(Robot) :-
     rdf_assert(Robot, urdf:'hasJoint', Joint),
     rdf_assert(Joint, urdf:'name', literal(type(xsd:string, JointName))))).
 
+joint_has_kin_limits(Joint) :-
+  owl_individual_of(Joint, urdf:'JointWithKinematicLimits'),
+  joint_name(Joint, JointName),
+  joint_velocity_limit(JointName, _),
+  joint_effort_limit(JointName, _).
+
 assert_joint_properties(Robot) :-
   owl_individual_of(Robot, urdf:'Robot'),!,
   forall(owl_has(Robot, urdf:'hasJoint', Joint), 
@@ -445,7 +452,7 @@ assert_joint_properties(Joint) :-
   assert_parent_link(Joint),
   assert_child_link(Joint),
   ((owl_individual_of(Joint, urdf:'JointWithAxis')) -> (assert_axis(Joint)) ; (true)),
-  ((owl_individual_of(Joint, urdf:'JointWithKinematicLimits')) -> (assert_kin_limits(Joint)) ; (true)),
+  ((joint_has_kin_limits(Joint)) -> (assert_kin_limits(Joint)) ; (true)),
   ((owl_individual_of(Joint, urdf:'JointWithPositionLimits')) -> (assert_pos_limits(Joint)) ; (true)).
 
 assert_parent_link(Joint) :-
@@ -481,8 +488,6 @@ assert_pos_limits(Joint) :-
 assert_kin_limits(Joint) :-
   joint_name(Joint, JointName),!,
   owl_individual_of(Joint, urdf:'JointWithKinematicLimits'),!,
-  print(JointName),
-  print(Joint),
   joint_velocity_limit(JointName, VelocityLimit),
   joint_effort_limit(JointName, EffortLimit),
   rdf_assert(Joint, urdf:'velocityLimit', literal(type(xsd:double, VelocityLimit))),
