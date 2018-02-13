@@ -624,4 +624,16 @@ test(owl_dynamics_r_forearm_cam_optical_frame_joint, fail) :-
   owl_has(Joint, urdf:'damping', _),
   owl_has(Joint, urdf:'friction', _).
 
+test(owl_safety_r_gripper_joint) :-
+  joint_name(Joint, r_gripper_joint),
+  owl_has(Joint, urdf:'hasSafetyController', Safety),
+  owl_has(Safety, urdf:'softLowerLimit', literal(type(xsd:double, -0.01))),
+  owl_has(Safety, urdf:'softUpperLimit', literal(type(xsd:double, 0.088))),
+  owl_has(Safety, urdf:'kPosition', literal(type(xsd:double, 20.0))),
+  owl_has(Safety, urdf:'kVelocity', literal(type(xsd:double, 5000.0))),!.
+
+test(owl_safety_l_upper_arm_joint, fail) :-
+  joint_name(Joint, l_upper_arm_joint),
+  owl_has(Joint, urdf:'hasSafetyController', _).
+
 :- end_tests(urdf_parser).
