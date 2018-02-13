@@ -593,7 +593,7 @@ test(owl_kin_limits_r_upper_arm_joint, fail) :-
 
 test(owl_kin_limits_head_pan_joint) :-
   joint_name(Joint, head_pan_joint),
-  owl_has(Joint, urdf:'velocityLimit', literal(type(xsd:double, 6))),
-  owl_has(Joint, urdf:'effortLimit', literal(type(xsd:double, 2.645))).
+  owl_has(Joint, urdf:'velocityLimit', literal(type(xsd:double, 6.0))),
+  owl_has(Joint, urdf:'effortLimit', literal(type(xsd:double, 2.645))),!.
 
 :- end_tests(urdf_parser).
