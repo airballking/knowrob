@@ -451,6 +451,7 @@ assert_joint_properties(Joint) :-
   owl_individual_of(Joint, urdf:'Joint'),!,
   assert_parent_link(Joint),
   assert_child_link(Joint),
+  assert_origin(Joint),
   ((owl_individual_of(Joint, urdf:'JointWithAxis')) -> (assert_axis(Joint)) ; (true)),
   ((joint_has_kin_limits(Joint)) -> (assert_kin_limits(Joint)) ; (true)),
   ((owl_individual_of(Joint, urdf:'JointWithPositionLimits')) -> (assert_pos_limits(Joint)) ; (true)).
@@ -492,3 +493,20 @@ assert_kin_limits(Joint) :-
   joint_effort_limit(JointName, EffortLimit),
   rdf_assert(Joint, urdf:'velocityLimit', literal(type(xsd:double, VelocityLimit))),
   rdf_assert(Joint, urdf:'effortLimit', literal(type(xsd:double, EffortLimit))).
+
+assert_origin(Joint) :-
+  joint_name(Joint, JointName),!,
+  joint_origin(JointName, pose([X,Y,Z],[QX,QY,QZ,QW])),
+  owl_instance_from_class(urdf:'Vector3d', Position),
+  rdf_assert(Position, urdf:'x', literal(type(xsd:double, X))),
+  rdf_assert(Position, urdf:'y', literal(type(xsd:double, Y))),
+  rdf_assert(Position, urdf:'z', literal(type(xsd:double, Z))),
+  owl_instance_from_class(urdf:'Quaternion', Orientation),
+  rdf_assert(Orientation, urdf:'x', literal(type(xsd:double, QX))),
+  rdf_assert(Orientation, urdf:'y', literal(type(xsd:double, QY))),
+  rdf_assert(Orientation, urdf:'z', literal(type(xsd:double, QZ))),
+  rdf_assert(Orientation, urdf:'w', literal(type(xsd:double, QW))),
+  owl_instance_from_class(urdf:'Transform', Origin),
+  rdf_assert(Origin, urdf:'hasPosition', Position),
+  rdf_assert(Origin, urdf:'hasOrientation', Orientation),
+  rdf_assert(Joint, urdf:'hasOrigin', Origin).

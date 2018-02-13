@@ -596,4 +596,17 @@ test(owl_kin_limits_head_pan_joint) :-
   owl_has(Joint, urdf:'velocityLimit', literal(type(xsd:double, 6.0))),
   owl_has(Joint, urdf:'effortLimit', literal(type(xsd:double, 2.645))),!.
 
+test(owl_origin_base_bellow_joint) :-
+  joint_name(Joint, base_bellow_joint),
+  owl_has(Joint, urdf:'hasOrigin', Origin),
+  owl_has(Origin, urdf:'hasPosition', Position),
+  owl_has(Origin, urdf:'hasOrientation', Orientation),
+  owl_has(Position, urdf:'x', literal(type(xsd:double, -0.29))),
+  owl_has(Position, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Position, urdf:'z', literal(type(xsd:double, 0.8))),
+  owl_has(Orientation, urdf:'x', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'z', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'w', literal(type(xsd:double, 1.0))),!.
+
 :- end_tests(urdf_parser).
