@@ -660,4 +660,16 @@ test(owl_calibration_falling_head_plate_frame_joint, fail) :-
   joint_name(Joint, head_plate_frame_joint),
   owl_has(Joint, urdf:'fallingCalibrationPos', _).
 
+test(owl_mimic_torso_lift_joint, fail) :-
+  joint_name(Joint, torso_lift_joint),
+  owl_has(Joint, urdf:'hasMimicProperties', _).
+
+test(owl_mimic_r_gripper_r_finger_joint) :-
+  joint_name(Joint, r_gripper_r_finger_joint),
+  owl_has(Joint, urdf:'hasMimicProperties', MimicProps),
+  owl_has(MimicProps, urdf:'hasMimickedJoint', MimickedJoint),
+  joint_name(MimickedJoint, r_gripper_l_finger_joint),
+  owl_has(MimicProps, urdf:'mimicFactor', literal(type(xsd:double, 1.0))),
+  owl_has(MimicProps, urdf:'mimicOffset', literal(type(xsd:double, 0.0))),!.
+
 :- end_tests(urdf_parser).

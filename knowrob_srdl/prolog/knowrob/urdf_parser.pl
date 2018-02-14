@@ -462,6 +462,10 @@ joint_has_calibration(Joint) :-
   joint_name(Joint, JointName),
   (joint_calibration_rising(JointName, _); joint_calibration_falling(JointName, _)).
 
+joint_has_mimic_props(Joint) :-
+  joint_name(Joint, JointName),
+  joint_mimic_joint_name(JointName, _).
+
 assert_joint_properties(Robot) :-
   owl_individual_of(Robot, urdf:'Robot'),!,
   forall(owl_has(Robot, urdf:'hasJoint', Joint), 
@@ -477,7 +481,8 @@ assert_joint_properties(Joint) :-
   ((owl_individual_of(Joint, urdf:'JointWithPositionLimits')) -> (assert_pos_limits(Joint)) ; (true)),
   ((joint_has_dynamics(Joint)) -> (assert_dynamics(Joint)) ; (true)),
   ((joint_has_safety_controller(Joint)) -> (assert_safety_controller(Joint)) ; (true)),
-  ((joint_has_calibration(Joint)) -> (assert_calibration(Joint)) ; (true)).
+  ((joint_has_calibration(Joint)) -> (assert_calibration(Joint)) ; (true)),
+  ((joint_has_mimic_props(Joint)) -> (assert_mimic_props(Joint)) ; (true)).
 
 assert_parent_link(Joint) :-
   joint_name(Joint, JointName),!, 
@@ -558,3 +563,16 @@ assert_calibration(Joint) :-
   joint_name(Joint, JointName),
   ((joint_calibration_rising(JointName, Rising)) -> (rdf_assert(Joint, urdf:'risingCalibrationPos', literal(type(xsd:double, Rising)))) ; (true)),
   ((joint_calibration_falling(JointName, Falling)) -> (rdf_assert(Joint, urdf:'fallingCalibrationPos', literal(type(xsd:double, Falling)))) ; (true)).
+
+assert_mimic_props(Joint) :-
+  joint_name(Joint, JointName),
+  joint_mimic_joint_name(JointName, MimickedJointName),
+  joint_mimic_multiplier(JointName, MimicFactor),
+  joint_mimic_offset(JointName, MimicOffset),
+  joint_name(MimickedJoint, MimickedJointName),
+  owl_instance_from_class(urdf:'MimicProperties', MimicProps),
+  rdf_assert(Joint, urdf:'hasMimicProperties', MimicProps),
+  rdf_assert(MimicProps, urdf:'hasMimickedJoint', MimickedJoint),
+  rdf_assert(MimicProps, urdf:'mimicFactor', literal(type(xsd:double, MimicFactor))),
+  rdf_assert(MimicProps, urdf:'mimicOffset', literal(type(xsd:double, MimicOffset))).
+
