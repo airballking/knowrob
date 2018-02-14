@@ -75,6 +75,29 @@
     
 
 
+    <!-- http://knowrob.org/kb/urdf.owl#hasMimicProperties -->
+
+    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#hasMimicProperties">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#isMimicPropertiesOf"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#hasMimickedJoint -->
+
+    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#hasMimickedJoint">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#isMimickedJointOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
+        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://knowrob.org/kb/urdf.owl#hasOrientation -->
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#hasOrientation">
@@ -128,6 +151,7 @@
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#hasSafetyController">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#isSafetyControllerOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#SafetyController"/>
     </owl:ObjectProperty>
@@ -180,6 +204,26 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Robot"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#isMimicPropertiesOf -->
+
+    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isMimicPropertiesOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
+        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#isMimickedJointOf -->
+
+    <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isMimickedJointOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
     </owl:ObjectProperty>
     
 
@@ -249,6 +293,7 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#damping">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -258,6 +303,17 @@
     <!-- http://knowrob.org/kb/urdf.owl#effortLimit -->
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#effortLimit">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#fallingCalibrationPos -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#fallingCalibrationPos">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
@@ -269,6 +325,7 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#friction">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -279,6 +336,7 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#kPosition">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#SafetyController"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -289,6 +347,7 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#kVelocity">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#SafetyController"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -299,7 +358,30 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#lowerPosLimit">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#mimicFactor -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#mimicFactor">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://knowrob.org/kb/urdf.owl#mimicOffset -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#mimicOffset">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -323,10 +405,22 @@
     
 
 
+    <!-- http://knowrob.org/kb/urdf.owl#risingCalibrationPos -->
+
+    <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#risingCalibrationPos">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://knowrob.org/kb/urdf.owl#softLowerLimit -->
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#softLowerLimit">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#SafetyController"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -337,6 +431,7 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#softUpperLimit">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#SafetyController"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -347,6 +442,7 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#upperPosLimit">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -357,6 +453,7 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#velocityLimit">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -368,14 +465,7 @@
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#w">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain>
-            <owl:Class>
-                <owl:unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Quaternion"/>
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Vector3d"/>
-                </owl:unionOf>
-            </owl:Class>
-        </rdfs:domain>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Quaternion"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -472,14 +562,6 @@
     
 
 
-    <!-- http://knowrob.org/kb/urdf.owl#GeometricConcept -->
-
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#GeometricConcept">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
-    </owl:Class>
-    
-
-
     <!-- http://knowrob.org/kb/urdf.owl#Joint -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#Joint">
@@ -524,6 +606,14 @@
     
 
 
+    <!-- http://knowrob.org/kb/urdf.owl#MimicProperties -->
+
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#MimicProperties">
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
+    </owl:Class>
+    
+
+
     <!-- http://knowrob.org/kb/urdf.owl#PlanarJoint -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#PlanarJoint">
@@ -545,7 +635,7 @@
     <!-- http://knowrob.org/kb/urdf.owl#Quaternion -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#Quaternion">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#GeometricConcept"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
     </owl:Class>
     
 
@@ -577,7 +667,7 @@
     <!-- http://knowrob.org/kb/urdf.owl#Transform -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#Transform">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#GeometricConcept"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
     </owl:Class>
     
 
@@ -591,7 +681,7 @@
     <!-- http://knowrob.org/kb/urdf.owl#Vector3d -->
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#Vector3d">
-        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#GeometricConcept"/>
+        <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
     </owl:Class>
     
 
@@ -615,17 +705,12 @@
     <rdf:Description>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
         <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#GeometricConcept"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Joint"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Link"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Quaternion"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Robot"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#SafetyController"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Quaternion"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Transform"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#Vector3d"/>
         </owl:members>
