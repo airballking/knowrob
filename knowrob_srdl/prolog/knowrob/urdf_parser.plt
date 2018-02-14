@@ -636,4 +636,28 @@ test(owl_safety_l_upper_arm_joint, fail) :-
   joint_name(Joint, l_upper_arm_joint),
   owl_has(Joint, urdf:'hasSafetyController', _).
 
+test(owl_calibration_rising_fl_caster_rotation_joint) :-
+  joint_name(Joint, fl_caster_rotation_joint),
+  owl_has(Joint, urdf:'risingCalibrationPos', literal(type(xsd:double, -0.785398163397))),!.
+
+test(owl_calibration_rising_torso_lift_joint, fail) :-
+  joint_name(Joint, torso_lift_joint),
+  owl_has(Joint, urdf:'risingCalibrationPos', _).
+
+test(owl_calibration_falling_torso_lift_joint) :-
+  joint_name(Joint, torso_lift_joint),
+  owl_has(Joint, urdf:'fallingCalibrationPos', literal(type(xsd:double, 0.00475))),!.
+
+test(owl_calibration_falling_fl_caster_rotation_joint, fail) :-
+  joint_name(Joint, fl_caster_rotation_joint),
+  owl_has(Joint, urdf:'fallingCalibrationPos', _).
+
+test(owl_calibration_rising_head_plate_frame_joint, fail) :-
+  joint_name(Joint, head_plate_frame_joint),
+  owl_has(Joint, urdf:'risingCalibrationPos', _).
+
+test(owl_calibration_falling_head_plate_frame_joint, fail) :-
+  joint_name(Joint, head_plate_frame_joint),
+  owl_has(Joint, urdf:'fallingCalibrationPos', _).
+
 :- end_tests(urdf_parser).

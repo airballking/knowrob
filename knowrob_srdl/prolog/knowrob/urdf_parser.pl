@@ -77,6 +77,7 @@
       joint_has_kin_limits/1,
       joint_has_dynamics/1,
       joint_has_safety_controller/1,
+      joint_has_calibration/1,
       assert_urdf_file/2, 
       assert_robot/1, 
       assert_robot_individual/1,
@@ -90,7 +91,8 @@
       assert_kin_limits/1,
       assert_origin/1,
       assert_dynamics/1,
-      assert_safety_controller/1
+      assert_safety_controller/1,
+      assert_calibration/1
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -456,6 +458,10 @@ joint_has_safety_controller(Joint) :-
   joint_name(Joint, JointName),!,
   joint_safety_kp(JointName, _).
 
+joint_has_calibration(Joint) :-
+  joint_name(Joint, JointName),
+  (joint_calibration_rising(JointName, _); joint_calibration_falling(JointName, _)).
+
 assert_joint_properties(Robot) :-
   owl_individual_of(Robot, urdf:'Robot'),!,
   forall(owl_has(Robot, urdf:'hasJoint', Joint), 
@@ -470,7 +476,8 @@ assert_joint_properties(Joint) :-
   ((joint_has_kin_limits(Joint)) -> (assert_kin_limits(Joint)) ; (true)),
   ((owl_individual_of(Joint, urdf:'JointWithPositionLimits')) -> (assert_pos_limits(Joint)) ; (true)),
   ((joint_has_dynamics(Joint)) -> (assert_dynamics(Joint)) ; (true)),
-  ((joint_has_safety_controller(Joint)) -> (assert_safety_controller(Joint)) ; (true)).
+  ((joint_has_safety_controller(Joint)) -> (assert_safety_controller(Joint)) ; (true)),
+  ((joint_has_calibration(Joint)) -> (assert_calibration(Joint)) ; (true)).
 
 assert_parent_link(Joint) :-
   joint_name(Joint, JointName),!, 
@@ -546,3 +553,8 @@ assert_safety_controller(Joint) :-
   rdf_assert(Safety, urdf:'softUpperLimit', literal(type(xsd:double, Upper))),
   rdf_assert(Safety, urdf:'kPosition', literal(type(xsd:double, Kp))),
   rdf_assert(Safety, urdf:'kVelocity', literal(type(xsd:double, Kv))).
+
+assert_calibration(Joint) :-
+  joint_name(Joint, JointName),
+  ((joint_calibration_rising(JointName, Rising)) -> (rdf_assert(Joint, urdf:'risingCalibrationPos', literal(type(xsd:double, Rising)))) ; (true)),
+  ((joint_calibration_falling(JointName, Falling)) -> (rdf_assert(Joint, urdf:'fallingCalibrationPos', literal(type(xsd:double, Falling)))) ; (true)).
