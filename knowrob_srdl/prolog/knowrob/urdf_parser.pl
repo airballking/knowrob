@@ -92,7 +92,8 @@
       assert_origin/1,
       assert_dynamics/1,
       assert_safety_controller/1,
-      assert_calibration/1
+      assert_calibration/1,
+      assert_link_properties/1
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -420,7 +421,8 @@ assert_robot(Robot) :-
   assert_robot_individual(Robot),
   assert_robot_links(Robot),
   assert_robot_joints(Robot),
-  assert_joint_properties(Robot).
+  assert_joint_properties(Robot),
+  assert_link_properties(Robot).
 
 assert_robot_individual(Robot) :-
   owl_instance_from_class(urdf:'Robot', Robot),
@@ -575,4 +577,17 @@ assert_mimic_props(Joint) :-
   rdf_assert(MimicProps, urdf:'hasMimickedJoint', MimickedJoint),
   rdf_assert(MimicProps, urdf:'mimicFactor', literal(type(xsd:double, MimicFactor))),
   rdf_assert(MimicProps, urdf:'mimicOffset', literal(type(xsd:double, MimicOffset))).
+
+assert_link_properties(Robot) :-
+  owl_individual_of(Robot, urdf:'Robot'),!,
+  forall(owl_has(Robot, urdf:'hasLink', Link), 
+    assert_link_properties(Link)).
+
+assert_link_properties(Link) :-
+  owl_individual_of(Link, urdf:'Link'),!,
+  %% TODO: complete me
+  true.
+
+
+
 
