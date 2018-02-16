@@ -35,9 +35,7 @@
       link_names/1,
       link_parent_joint/2,
       link_child_joints/2,
-      link_inertial_origin/2,
-      link_inertial_mass/2,
-      link_inertial_inertia/2,
+      link_inertial/4,
       link_num_visuals/2,
       link_visual_type/3,
       link_visual_origin/3,
@@ -157,22 +155,17 @@
 %
 % Get the list of joint names of all child joints of a link.
 
-%% link_inertial_origin(+LinkName, -Origin) is semidet.
+%% link_inertial(+LinkName, -Origin, -Mass, -InertiaMat) is semidet.
 %
-% Get the inertial origin of a link as a pose w.r.t.
-% the origin frame of a link.
+% Get the inertial properties of a link.
+%
+% The inertial origin of a link as a pose w.r.t. the origin 
+% frame of that link.
 %
 % Poses are coded as a compound term: pose([X,Y,Z],[QX,QY,QZ,QW]),
 % with the orientation represented as Quaternion.
-
-%% link_inertial_mass(+LinkName, -Mass) is semidet.
 %
-% Get the inertial mass of a link in kg.
-
-%% link_inertial_inertia(+LinkName, -InertiaMat) is semidet.
-%
-% Get the relevant parts of a links inertia matrix w.r.t.
-% the origin frame of a link.
+% Inertial mass of link in kg.
 %
 % Inertia matrices are coded as a list:
 % [XX, XY, XZ, YY, YZ, ZZ].
@@ -587,7 +580,3 @@ assert_link_properties(Link) :-
   owl_individual_of(Link, urdf:'Link'),!,
   %% TODO: complete me
   true.
-
-
-
-

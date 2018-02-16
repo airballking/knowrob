@@ -224,41 +224,15 @@ PREDICATE(link_child_joints, 2) {
     }
 }
 
-PREDICATE(link_inertial_origin, 2) {
+PREDICATE(link_inertial, 4) {
     try {
         std::string link_name((char*) PL_A1);
         urdf::LinkConstSharedPtr link = get_link(link_name);
         if (!link->inertial)
             return false;
         PL_A2 = to_prolog_pose(link->inertial->origin);
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_inertial_mass, 2) {
-    try {
-        std::string link_name((char*) PL_A1);
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link->inertial)
-            return false;
-        PL_A2 = link->inertial->mass;
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_inertial_inertia, 2) {
-    try {
-        std::string link_name((char*) PL_A1);
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link->inertial)
-            return false;
-        PlTail inertia(PL_A2);
+        PL_A3 = link->inertial->mass;
+        PlTail inertia(PL_A4);
         inertia.append(link->inertial->ixx);
         inertia.append(link->inertial->ixy);
         inertia.append(link->inertial->ixz);
