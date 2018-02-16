@@ -62,9 +62,7 @@
       joint_calibration_falling/2,
       joint_dynamics_damping/2,
       joint_dynamics_friction/2,
-      joint_mimic_joint_name/2,
-      joint_mimic_multiplier/2,
-      joint_mimic_offset/2,
+      joint_mimic/4,
       joint_safety_lower_limit/2,
       joint_safety_upper_limit/2,
       joint_safety_kp/2,
@@ -349,17 +347,10 @@
 %
 % Get the static friction value of a joint.
 
-%% joint_mimic_joint_name(+JointName, -MimickedJointName) ist semidet.
+%% joint_mimic(+JointName, -MimickedJointName, -Multiplier, -Offset) ist semidet.
 %
-% Get the name of a joint that a mimic joint mimicks.
-
-%% joint_mimic_multiplier(+JointName, -Multiplier) is semidet.
-%
-% Get the multiplication factor of a mimic joint.
-
-%% joint_mimic_offset(+JointName, -Offset) is semidet.
-%
-% Get the offset value of a mimic joint.
+% Get the name of a joint that a mimic joint mimicks. Also, get 
+% the multiplication factor and offset of the mimic joint.
 
 %% joint_safety_lower_limit(+JointName, -Lower) is semidet.
 %
@@ -459,7 +450,7 @@ joint_has_calibration(Joint) :-
 
 joint_has_mimic_props(Joint) :-
   joint_name(Joint, JointName),
-  joint_mimic_joint_name(JointName, _).
+  joint_mimic(JointName, _, _, _).
 
 assert_joint_properties(Robot) :-
   owl_individual_of(Robot, urdf:'Robot'),!,
@@ -561,9 +552,7 @@ assert_calibration(Joint) :-
 
 assert_mimic_props(Joint) :-
   joint_name(Joint, JointName),
-  joint_mimic_joint_name(JointName, MimickedJointName),
-  joint_mimic_multiplier(JointName, MimicFactor),
-  joint_mimic_offset(JointName, MimicOffset),
+  joint_mimic(JointName, MimickedJointName, MimicFactor, MimicOffset),
   joint_name(MimickedJoint, MimickedJointName),
   owl_instance_from_class(urdf:'MimicProperties', MimicProps),
   rdf_assert(Joint, urdf:'hasMimicProperties', MimicProps),
