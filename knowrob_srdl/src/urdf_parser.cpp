@@ -603,27 +603,14 @@ PREDICATE(joint_origin, 2) {
     }
 }
 
-PREDICATE(joint_lower_pos_limit, 2) {
+PREDICATE(joint_pos_limits, 3) {
      try {
          std::string joint_name((char*) PL_A1);
          urdf::JointConstSharedPtr joint = get_joint(joint_name);
          if (!joint_has_pos_limits(joint))
             return false;
          PL_A2 = joint->limits->lower;
-         return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(joint_upper_pos_limit, 2) {
-     try {
-         std::string joint_name((char*) PL_A1);
-         urdf::JointConstSharedPtr joint = get_joint(joint_name);
-         if (!joint_has_pos_limits(joint))
-            return false;
-         PL_A2 = joint->limits->upper;
+         PL_A3 = joint->limits->upper;
          return true;
     } catch (const std::runtime_error& e) {
         ROS_ERROR("%s", e.what());

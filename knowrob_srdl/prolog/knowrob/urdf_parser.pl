@@ -54,8 +54,7 @@
       joint_parent_link/2,
       joint_axis/2,
       joint_origin/2,
-      joint_lower_pos_limit/2,
-      joint_upper_pos_limit/2,
+      joint_pos_limits/3,
       joint_velocity_limit/2,
       joint_effort_limit/2,
       joint_calibration_rising/2,
@@ -306,16 +305,9 @@
 % Poses are coded as a compound term: pose([X,Y,Z],[QX,QY,QZ,QW]),
 % with the orientation represented as Quaternion.
 
-%% joint_lower_pos_limit(+JointName, -Lower) is semidet.
+%% joint_pos_limits(+JointName, -Lower, -Upper) is semidet.
 %
-% Read the lower position limit of a joint.
-%
-% Note: Only valid for prismatic and revolute joints.
-
-
-%% joint_upper_pos_limit(+JointName, -Upper) is semidet.
-%
-% Read the upper position limit of a joint.
+% Read the lower and upper position limits of a joint.
 %
 % Note: Only valid for prismatic and revolute joints.
 
@@ -494,8 +486,7 @@ assert_axis(Joint) :-
 
 assert_pos_limits(Joint) :-
   joint_name(Joint, JointName),!,
-  joint_lower_pos_limit(JointName, Lower),
-  joint_upper_pos_limit(JointName, Upper),
+  joint_pos_limits(JointName, Lower, Upper),
   owl_individual_of(Joint, urdf:'JointWithPositionLimits'),!,
   rdf_assert(Joint, urdf:'lowerPosLimit', literal(type(xsd:double, Lower))),
   rdf_assert(Joint, urdf:'upperPosLimit', literal(type(xsd:double, Upper))).

@@ -180,17 +180,17 @@ test(joint_origin_pr2_l_foreaem_cam_optical_frame_joint) :-
   joint_origin(l_forearm_cam_optical_frame_joint,
                pose([0,0,0],[-0.5, 0.5, -0.5, 0.5])).
 
-test(joint_lower_limit_pr2_l_elbow_flex_joint) :-
-  joint_lower_pos_limit(l_elbow_flex_joint, -2.3213).
+test(joint_pos_limits_l_elbow_flex_joint) :-
+  joint_pos_limits(l_elbow_flex_joint, -2.3213, 0.0).
 
-test(joint_lower_limit_pr2_l_wrist_roll_joint, fail) :-
-  joint_lower_pos_limit(l_wrist_roll_joint, _).
+test(joint_pos_limits_l_wrist_roll_joint, fail) :-
+  joint_pos_limits(l_wrist_roll_joint, _, _).
 
-test(joint_upper_limit_pr2_torso_lift_joint) :-
-  joint_upper_pos_limit(torso_lift_joint, 0.33).
+test(joint_pos_limits_torso_lift_joint) :-
+  joint_pos_limits(torso_lift_joint, 0.33, 0.013).
 
-test(joint_upper_limit_pr2_r_forearm_roll_joint, fail) :-
-  joint_lower_pos_limit(r_forearm_roll_joint, _).
+test(joint_pos_limits_r_forearm_roll_joint, fail) :-
+  joint_pos_limits(r_forearm_roll_joint, _, _).
 
 test(joint_vel_limit_pr2_r_gripper_joint) :-
   joint_velocity_limit(r_gripper_joint, 0.2).
@@ -235,10 +235,10 @@ test(joint_dynamics_friction_pr2_head_pan_joint) :-
   joint_dynamics_friction(head_pan_joint, 0.0).
 
 test(joint_mimic_torso_lift_joint, fail) :-
-  joint_mimic_joint_name(torso_lift_joint, _, _, _).
+  joint_mimic(torso_lift_joint, _, _, _).
 
 test(joint_mimic_r_gripper_r_finger_joint) :-
-  joint_mimic_joint_name(r_gripper_r_finger_joint, r_gripper_l_finger_joint, 1.0, 0.0).
+  joint_mimic(r_gripper_r_finger_joint, r_gripper_l_finger_joint, 1.0, 0.0).
 
 test(joint_safety_lower_limit_pr2_l_upper_arm_joint, fail) :-
   joint_safety_lower_limit(l_upper_arm_joint, _).
