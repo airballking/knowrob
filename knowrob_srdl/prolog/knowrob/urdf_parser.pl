@@ -50,8 +50,7 @@
       link_collision_geometry/3,
       joint_names/1,
       joint_type/2,
-      joint_child_link/2,
-      joint_parent_link/2,
+      joint_child_parent/3,
       joint_axis/2,
       joint_origin/2,
       joint_pos_limits/3,
@@ -78,8 +77,7 @@
       assert_robot_links/1,
       assert_robot_joints/1,
       assert_joint_properties/1,
-      assert_child_link/1,
-      assert_parent_link/1,
+      assert_child_parent_links/1,
       assert_axis/1,
       assert_pos_limits/1,
       assert_kin_limits/1,
@@ -284,13 +282,9 @@
 % Possible types: revolute, prismatic, continuous, fixed,
 % floating, planar, and unknown.
 
-%% joint_child_link(+JointName, -LinkName) is semidet.
+%% joint_child_parent(+JointName, -ChildLinkName, -ParentLinkName) is semidet.
 %
-% Get the name of the link of a joint.
-
-%% joint_parent_link(+JointName, -LinkName) is semidet.
-%
-% Get the name the parent link of a joint.
+% Get the name of the child and parent links of a joint.
 
 %% joint_axis(+JointName, -Axis) is semidet.
 %
@@ -443,8 +437,7 @@ assert_joint_properties(Robot) :-
 
 assert_joint_properties(Joint) :-
   owl_individual_of(Joint, urdf:'Joint'),!,
-  assert_parent_link(Joint),
-  assert_child_link(Joint),
+  assert_child_parent_links(Joint),
   assert_origin(Joint),
   ((owl_individual_of(Joint, urdf:'JointWithAxis')) -> (assert_axis(Joint)) ; (true)),
   ((joint_has_kin_limits(Joint)) -> (assert_kin_limits(Joint)) ; (true)),
@@ -454,16 +447,12 @@ assert_joint_properties(Joint) :-
   ((joint_has_calibration(Joint)) -> (assert_calibration(Joint)) ; (true)),
   ((joint_has_mimic_props(Joint)) -> (assert_mimic_props(Joint)) ; (true)).
 
-assert_parent_link(Joint) :-
+assert_child_parent_links(Joint) :-
   joint_name(Joint, JointName),!, 
-  joint_parent_link(JointName, ParentLinkName),
-  link_name(ParentLink, ParentLinkName),!,
-  rdf_assert(Joint, urdf:'hasParentLink', ParentLink).
-
-assert_child_link(Joint) :-
-  joint_name(Joint, JointName),!,
-  joint_child_link(JointName, ChildLinkName),
+  joint_child_parent(JointName, ChildLinkName, ParentLinkName),
   link_name(ChildLink, ChildLinkName),!,
+  link_name(ParentLink, ParentLinkName),!,
+  rdf_assert(Joint, urdf:'hasParentLink', ParentLink),
   rdf_assert(Joint, urdf:'hasChildLink', ChildLink).
 
 assert_axis(Joint) :-

@@ -119,23 +119,17 @@ test(link_names_pr2) :-
    wide_stereo_l_stereo_camera_frame, wide_stereo_l_stereo_camera_optical_frame, wide_stereo_link,
    wide_stereo_optical_frame, wide_stereo_r_stereo_camera_frame, wide_stereo_r_stereo_camera_optical_frame].
 
-test(joint_child_link_pr2_torso_lift_joint) :-
-  joint_child_link(torso_lift_joint, torso_lift_link).
+test(joint_child_parent_torso_lift_joint) :-
+  joint_child_parent(torso_lift_joint, torso_lift_link, base_link).
 
-test(joint_child_link_pr2_l_shoulder_pan_joint) :-
-  joint_child_link(l_shoulder_pan_joint, l_shoulder_pan_link).
+test(joint_child_parent_l_shoulder_pan_joint) :-
+  joint_child_parent(l_shoulder_pan_joint, l_shoulder_pan_link, torso_lift_link).
 
-test(joint_child_link_pr2_nonexisting_joint, fail) :-
-  joint_child_link(foo, l_shoulder_pan_link).
+test(joint_child_parent_nonexisting_joint, fail) :-
+  joint_child_parent(foo, _,_ ).
 
-test(joint_parent_link_pr2_r_elbow_flex_joint) :-
-  joint_parent_link(r_elbow_flex_joint, r_upper_arm_roll_link).
-
-test(joint_parent_link_pr2_head_tilt_joint) :-
-  joint_parent_link(head_tilt_joint, head_pan_link).
-
-test(joint_parent_link_nonexisting_joint, fail) :-
-  joint_parent_link(bar, head_pan_link).
+test(joint_child_parent_r_elbow_flex_joint) :-
+  joint_child_parent(r_elbow_flex_joint, r_elbow_flex_link, r_upper_arm_roll_link).
 
 test(joint_type_pr2_torso_lift_joint) :-
   joint_type(torso_lift_joint, prismatic).
@@ -152,8 +146,8 @@ test(joint_type_pr2_head_plate_frame_joint) :-
 test(joint_child_link_and_link_parent_joint_pr2_left_arm, forall(
   member(J,[l_shoulder_pan_joint, l_shoulder_lift_joint, l_upper_arm_roll_joint,
         l_elbow_flex_joint, l_forearm_roll_joint, l_wrist_flex_joint, l_wrist_roll_joint]))) :-
-  joint_child_link(J,L),
-  link_parent_joint(L,J).
+  joint_child_parent(J,C,_),
+  link_parent_joint(C,J).
 
 % Observation: The root link of a robot never has a parent joint.
 test(link_parent_joint_pr2_root_link, fail) :-
