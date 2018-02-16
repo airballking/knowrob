@@ -55,8 +55,7 @@
       joint_axis/2,
       joint_origin/2,
       joint_pos_limits/3,
-      joint_velocity_limit/2,
-      joint_effort_limit/2,
+      joint_kin_limits/3,
       joint_calibration_rising/2,
       joint_calibration_falling/2,
       joint_dynamics_damping/2,
@@ -311,15 +310,9 @@
 %
 % Note: Only valid for prismatic and revolute joints.
 
-%% joint_velocity_limit(+JointName, -VelLimit) is semidet.
+%% joint_kin_limits(+JointName, -VelLimit, -EffLimit) is semidet.
 %
-% Read the velocity limit of a joint.
-%
-% Note: Only valid for prismatic, revolute, and continuous joints.
-
-%% joint_effort_limit(+JointName, -EffLimit) is semidet.
-%
-% Read the effort limit of a joint.
+% Read the velocity and effort limits of a joint.
 %
 % Note: Only valid for prismatic, revolute, and continuous joints.
 
@@ -424,8 +417,7 @@ assert_robot_joints(Robot) :-
 joint_has_kin_limits(Joint) :-
   owl_individual_of(Joint, urdf:'JointWithKinematicLimits'),
   joint_name(Joint, JointName),
-  joint_velocity_limit(JointName, _),
-  joint_effort_limit(JointName, _).
+  joint_kin_limits(JointName, _, _).
 
 joint_has_dynamics(Joint) :-
   joint_name(Joint, JointName),
@@ -494,8 +486,7 @@ assert_pos_limits(Joint) :-
 assert_kin_limits(Joint) :-
   joint_name(Joint, JointName),!,
   owl_individual_of(Joint, urdf:'JointWithKinematicLimits'),!,
-  joint_velocity_limit(JointName, VelocityLimit),
-  joint_effort_limit(JointName, EffortLimit),
+  joint_kin_limits(JointName, VelocityLimit, EffortLimit),
   rdf_assert(Joint, urdf:'velocityLimit', literal(type(xsd:double, VelocityLimit))),
   rdf_assert(Joint, urdf:'effortLimit', literal(type(xsd:double, EffortLimit))).
 
