@@ -57,8 +57,7 @@
       joint_kin_limits/3,
       joint_calibration_rising/2,
       joint_calibration_falling/2,
-      joint_dynamics_damping/2,
-      joint_dynamics_friction/2,
+      joint_dynamics/3,
       joint_mimic/4,
       joint_safety_lower_limit/2,
       joint_safety_upper_limit/2,
@@ -318,13 +317,9 @@
 %
 % Read the falling reference position of a joint.
 
-%% joint_dynamics_damping(+JointName, -Damping) is semidet.
+%% joint_dynamics(+JointName, -Damping, -Friction) is semidet.
 %
-% Read the damping value of a joint.
-
-%% joint_dynamics_friction(+JointName, -Friction) is semidet.
-%
-% Get the static friction value of a joint.
+% Read the damping and friction values of a joint.
 
 %% joint_mimic(+JointName, -MimickedJointName, -Multiplier, -Offset) ist semidet.
 %
@@ -415,8 +410,7 @@ joint_has_kin_limits(Joint) :-
 
 joint_has_dynamics(Joint) :-
   joint_name(Joint, JointName),
-  joint_dynamics_damping(JointName, _),
-  joint_dynamics_friction(JointName, _).
+  joint_dynamics(JointName, _, _).
 
 joint_has_safety_controller(Joint) :-
   joint_name(Joint, JointName),!,
@@ -498,8 +492,7 @@ assert_origin(Joint) :-
 
 assert_dynamics(Joint) :-
   joint_name(Joint, JointName),!,
-  joint_dynamics_friction(JointName, Friction),
-  joint_dynamics_damping(JointName, Damping),
+  joint_dynamics(JointName, Damping, Friction),
   rdf_assert(Joint, urdf:'damping', literal(type(xsd:double, Damping))),
   rdf_assert(Joint, urdf:'friction', literal(type(xsd:double, Friction))).
 
