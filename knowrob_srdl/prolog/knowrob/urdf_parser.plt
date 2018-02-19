@@ -222,29 +222,11 @@ test(joint_mimic_torso_lift_joint, fail) :-
 test(joint_mimic_r_gripper_r_finger_joint) :-
   joint_mimic(r_gripper_r_finger_joint, r_gripper_l_finger_joint, 1.0, 0.0).
 
-test(joint_safety_lower_limit_pr2_l_upper_arm_joint, fail) :-
-  joint_safety_lower_limit(l_upper_arm_joint, _).
+test(joint_safety_l_upper_arm_joint, fail) :-
+  joint_safety(l_upper_arm_joint, _, _, _, _).
 
-test(joint_safety_upper_limit_pr2_l_upper_arm_joint, fail) :-
-  joint_safety_upper_limit(l_upper_arm_joint, _).
-
-test(joint_safety_kp_pr2_l_upper_arm_joint, fail) :-
-  joint_safety_kp(l_upper_arm_joint, _).
-
-test(joint_safety_kv_pr2_l_upper_arm_joint, fail) :-
-  joint_safety_kv(l_upper_arm_joint, _).
-
-test(joint_safety_lower_limit_pr2_l_elbow_flex_joint) :-
-  joint_safety_lower_limit(l_elbow_flex_joint, -2.1213).
-
-test(joint_safety_upper_limit_pr2_l_elbow_flex_joint) :-
-  joint_safety_upper_limit(l_elbow_flex_joint, -0.15).
-
-test(joint_safety_kp_pr2_l_elbow_flex_joint) :-
-  joint_safety_kp(l_elbow_flex_joint, 100.0).
-
-test(joint_safety_kv_pr2_l_elbow_flex_joint) :-
-  joint_safety_kv(l_elbow_flex_joint, 3.0).
+test(joint_safety_l_elbow_flex_joint) :-
+  joint_safety(l_elbow_flex_joint, -2.1213, -0.15, 100.0, 3.0).
 
 test(link_inertial_pr2_l_gripper_led_frame, fail) :-
   link_inertial(l_gripper_led_frame, _, _, _).

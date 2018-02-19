@@ -59,10 +59,7 @@
       joint_calibration_falling/2,
       joint_dynamics/3,
       joint_mimic/4,
-      joint_safety_lower_limit/2,
-      joint_safety_upper_limit/2,
-      joint_safety_kp/2,
-      joint_safety_kv/2,
+      joint_safety/5,
       urdf_owl_joint_type/2,
       link_name/2,
       joint_name/2,
@@ -326,30 +323,13 @@
 % Get the name of a joint that a mimic joint mimicks. Also, get 
 % the multiplication factor and offset of the mimic joint.
 
-%% joint_safety_lower_limit(+JointName, -Lower) is semidet.
+%% joint_safety(+JointName, -Lower, -Upper, -Kp, -Kv) is semidet.
 %
-% Get the lower position limit of the safety controller
-% of a joint.
-
-%% joint_safety_upper_limit(+JointName, -Upper) is semidet.
-%
-% Get the upper position limit of the safety controller
-% of a joint.
-
-%% joint_safety_kp(+JointName, -Kp) is semidet.
-%
-% Get the relation between position and velocity
-% limits of the safety controller of a joint. For
-% more details, visit:
+% Get the lower and upper position limits of the safety controller
+% of a joint. Also, get the relationships between position and
+% velocity limits of the safety controller of a joint. For more
+% details, please visit:
 % http://wiki.ros.org/pr2_controller_manager/safety_limits
-
-%% joint_safety_kv(+JointName, -Kv) is semidet.
-%
-% Get the relation between position and velocity
-% limits of the safety controller of a joint. For
-% more details, visit:
-% http://wiki.ros.org/pr2_controller_manager/safety_limits
-%
 
 urdf_owl_joint_type(prismatic, urdf:'PrismaticJoint').
 
@@ -414,7 +394,7 @@ joint_has_dynamics(Joint) :-
 
 joint_has_safety_controller(Joint) :-
   joint_name(Joint, JointName),!,
-  joint_safety_kp(JointName, _).
+  joint_safety(JointName, _, _, _, _).
 
 joint_has_calibration(Joint) :-
   joint_name(Joint, JointName),
@@ -498,10 +478,7 @@ assert_dynamics(Joint) :-
 
 assert_safety_controller(Joint) :-
   joint_name(Joint, JointName),!,
-  joint_safety_lower_limit(JointName, Lower),
-  joint_safety_upper_limit(JointName, Upper),
-  joint_safety_kp(JointName, Kp),
-  joint_safety_kv(JointName, Kv),
+  joint_safety(JointName, Lower, Upper, Kp, Kv),
   owl_instance_from_class(urdf:'SafetyController', Safety),
   rdf_assert(Joint, urdf:'hasSafetyController', Safety),
   rdf_assert(Safety, urdf:'softLowerLimit', literal(type(xsd:double, Lower))),
