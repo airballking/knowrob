@@ -143,24 +143,6 @@ test(joint_type_pr2_r_shoulder_lift_joint) :-
 test(joint_type_pr2_head_plate_frame_joint) :-
   joint_type(head_plate_frame_joint, fixed).
 
-test(joint_child_link_and_link_parent_joint_pr2_left_arm, forall(
-  member(J,[l_shoulder_pan_joint, l_shoulder_lift_joint, l_upper_arm_roll_joint,
-        l_elbow_flex_joint, l_forearm_roll_joint, l_wrist_flex_joint, l_wrist_roll_joint]))) :-
-  joint_child_parent(J,C,_),
-  link_parent_joint(C,J).
-
-% Observation: The root link of a robot never has a parent joint.
-test(link_parent_joint_pr2_root_link, fail) :-
-  root_link_name(L),
-  link_parent_joint(L, _).
-
-
-test(link_child_joints_pr2_torso_lift_link) :-
-  link_child_joints(torso_lift_link, Joints),
-  Joints ==
-    [head_pan_joint, imu_joint, l_shoulder_pan_joint, l_torso_lift_side_plate_joint,
-     laser_tilt_mount_joint, r_shoulder_pan_joint, r_torso_lift_side_plate_joint].
-
 test(joint_axis_pr2_l_shoulder_pan_joint) :-
   joint_axis(l_shoulder_pan_joint, [0,0,1]).
 

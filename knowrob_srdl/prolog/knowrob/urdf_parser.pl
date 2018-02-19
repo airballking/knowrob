@@ -33,8 +33,6 @@
       robot_name/1,
       root_link_name/1,
       link_names/1,
-      link_parent_joint/2,
-      link_child_joints/2,
       link_inertial/4,
       link_num_visuals/2,
       link_visual_type/3,
@@ -136,14 +134,6 @@
 %% link_names(-Names) is semidet.
 %
 % Get the list of all link names of this robot.
-
-%% link_parent_joint(+LinkName, -JointName) is semidet.
-%
-% Get the name of the parent joint of a link.
-
-%% link_child_joints(+LinkName, -JointNames) is semidet.
-%
-% Get the list of joint names of all child joints of a link.
 
 %% link_inertial(+LinkName, -Origin, -Mass, -InertiaMat) is semidet.
 %

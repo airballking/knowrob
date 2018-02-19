@@ -195,35 +195,6 @@ PREDICATE(link_names, 1) {
     }
 }
 
-PREDICATE(link_parent_joint, 2) {
-    try {
-        std::string link_name((char*) PL_A1);
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (link->parent_joint) {
-            PL_A2 = link->parent_joint->name.c_str();
-            return true;
-        } else
-            return false;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_child_joints, 2) {
-    try {
-        std::string link_name((char*) PL_A1);
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        PlTail child_joints(PL_A2);
-        for (auto const& child_joint: link->child_joints)
-            child_joints.append(child_joint->name.c_str());
-        return child_joints.close();
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
 PREDICATE(link_inertial, 4) {
     try {
         std::string link_name((char*) PL_A1);
