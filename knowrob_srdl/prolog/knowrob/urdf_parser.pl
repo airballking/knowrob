@@ -42,10 +42,7 @@
       link_material_color/3,
       link_material_texture/3,
       link_num_collisions/2,
-      link_collision_type/3,
-      link_collision_name/3,
-      link_collision_origin/3,
-      link_collision_geometry/3,
+      link_collision/5,
       joint_names/1,
       joint_type/2,
       joint_child_parent/3,
@@ -218,37 +215,17 @@
 %
 % Get the number of collision elements of a link.
 
-%% link_collision_type(+LinkName, +Index, -Type) is semidet.
+%% link_collision(+LinkName, +ColIndex, -Name, -Origin, -Geometry) is semidet.
 %
-% Get the type of a particular collision element of a link.
-% Possible types: box, sphere, cylinder, and mesh.
+% Get the properties of a particular collision element of a link.
 %
-% Note: Links can have several collision elements, the first
-% one has index 0.
-
-%% link_collision_name(+LinkName, +Index, -Name) is semidet.
+% Name is an optional string, returned as an atom. It defaults to the empty string.
 %
-% Get the name of a particular collision element of a link.
-%
-% Note: Links can have several collision elements, the first
-% one has index 0.
-
-%% link_collision_origin(+LinkName, +Index, -Origin) is semidet.
-%
-% Get the origin of a particular collision element of a link,
-% expressed as a pose w.r.t. to the link frame.
-%
+% Origin is expressed as a pose w.r.t. to the link frame.
 % Poses are coded as a compound term: pose([X,Y,Z],[QX,QY,QZ,QW]),
 % with the orientation represented as Quaternion.
 %
-% Note: Links can have several collision elements, the first
-% one has index 0.
-
-%% link_collision_geometry(+LinkName, +Index, -Geometry) is semidet.
-%
-% Get the geometry of a particular collision element of a link.
-%
-% Depending on the type of collision element, the geometry is
+% Depending on the type of collision element, Geometry is
 % coded differently:
 % - SPHERE: sphere([Radius])
 % - CYLINDER: cylinder([Radius, Length])

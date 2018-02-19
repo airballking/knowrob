@@ -174,8 +174,8 @@ bool link_has_collision_with_index(const urdf::LinkConstSharedPtr link, long ind
 }
 
 std::string geometry_type_name(const urdf::GeometryConstSharedPtr& geometry) {
-    // Note: The order of strings in this vector should be the same as the definition of the corresponding
-    //       enums in urdf::Geometry.
+    // Note: The order of strings in this vector should be the same as the
+    //       definition of the corresponding enums in urdf::Geometry.
     std::vector<std::string> type_names = {"sphere", "box", "cylinder", "mesh"};
     return type_names[geometry->type];
 }
@@ -360,62 +360,16 @@ PREDICATE(link_num_collisions, 2) {
     }
 }
 
-PREDICATE(link_collision_type, 3) {
-    try {
-        std::string link_name((char*) PL_A1);
-        long index = (long) PL_A2;
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link_has_collision_with_index(link, index) ||
-                !link->collision_array[index]->geometry)
-            return false;
-        PL_A3 = geometry_type_name(link->collision_array[index]->geometry).c_str();
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_collision_name, 3) {
-    try {
-        std::string link_name((char*) PL_A1);
-        long index = (long) PL_A2;
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link_has_collision_with_index(link, index) ||
-                (link->collision_array[index]->name.compare("") == 0))
-            return false;
-        PL_A3 = link->collision_array[index]->name.c_str();
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_collision_origin, 3) {
+PREDICATE(link_collision, 5) {
     try {
         std::string link_name((char*) PL_A1);
         long index = (long) PL_A2;
         urdf::LinkConstSharedPtr link = get_link(link_name);
         if (!link_has_collision_with_index(link, index))
             return false;
-        PL_A3 = to_prolog_pose(link->collision_array[index]->origin);
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_collision_geometry, 3) {
-    try {
-        std::string link_name((char*) PL_A1);
-        long index = (long) PL_A2;
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link_has_collision_with_index(link, index) ||
-                !link->collision_array[index]->geometry)
-            return false;
-        PL_A3 = to_prolog_geometry(link->collision_array[index]->geometry);
+        PL_A3 = link->collision_array[index]->name.c_str();
+        PL_A4 = to_prolog_pose(link->collision_array[index]->origin);
+        PL_A5 = to_prolog_geometry(link->collision_array[index]->geometry);
         return true;
     } catch (const std::runtime_error& e) {
         ROS_ERROR("%s", e.what());
@@ -453,8 +407,8 @@ PREDICATE(joint_names, 1) {
 PREDICATE(joint_type, 2) {
     try {
         std::string joint_name((char*) PL_A1);
-        // Note: The order of strings in this vector should be the same as the definition of the corresponding
-        //       enums in urdf::Joint.
+        // Note: The order of strings in this vector should be the same as the
+        //       definition of the corresponding enums in urdf::Joint.
         std::vector<std::string> type_names =
                 {"unknown", "revolute", "continuous", "prismatic", "floating", "planar", "fixed"};
         PL_A2 = type_names[get_joint(joint_name)->type].c_str();
