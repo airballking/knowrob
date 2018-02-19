@@ -173,6 +173,13 @@ bool link_has_collision_with_index(const urdf::LinkConstSharedPtr link, long ind
             (link->collision_array[index]);
 }
 
+std::string geometry_type_name(const urdf::GeometryConstSharedPtr& geometry) {
+    // Note: The order of strings in this vector should be the same as the definition of the corresponding
+    //       enums in urdf::Geometry.
+    std::vector<std::string> type_names = {"sphere", "box", "cylinder", "mesh"};
+    return type_names[geometry->type];
+}
+
 PREDICATE(root_link_name, 1) {
     try {
         PL_A1 = get_robot_model()->root_link_->name.c_str();
@@ -237,26 +244,8 @@ PREDICATE(link_visual_type, 3) {
         if (!link_has_visual_with_index(link, visual_index) ||
                 !link->visual_array[visual_index]->geometry)
             return false;
-        switch (link->visual_array[visual_index]->geometry->type) {
-            case urdf::Geometry::BOX: {
-                PL_A3 = "box";
-                return true;
-            }
-            case urdf::Geometry::CYLINDER: {
-                PL_A3 = "cylinder";
-                return true;
-            }
-            case urdf::Geometry::SPHERE: {
-                PL_A3 = "sphere";
-                return true;
-            }
-            case urdf::Geometry::MESH: {
-                PL_A3 = "mesh";
-                return true;
-            }
-            default:
-                return false;
-        }
+        PL_A3 = geometry_type_name(link->visual_array[visual_index]->geometry).c_str();
+        return true;
     } catch (const std::runtime_error& e) {
         ROS_ERROR("%s", e.what());
         return false;
@@ -379,26 +368,8 @@ PREDICATE(link_collision_type, 3) {
         if (!link_has_collision_with_index(link, index) ||
                 !link->collision_array[index]->geometry)
             return false;
-        switch (link->collision_array[index]->geometry->type) {
-            case urdf::Geometry::BOX: {
-                PL_A3 = "box";
-                return true;
-            }
-            case urdf::Geometry::CYLINDER: {
-                PL_A3 = "cylinder";
-                return true;
-            }
-            case urdf::Geometry::SPHERE: {
-                PL_A3 = "sphere";
-                return true;
-            }
-            case urdf::Geometry::MESH: {
-                PL_A3 = "mesh";
-                return true;
-            }
-            default:
-                return false;
-        }
+        PL_A3 = geometry_type_name(link->collision_array[index]->geometry).c_str();
+        return true;
     } catch (const std::runtime_error& e) {
         ROS_ERROR("%s", e.what());
         return false;
@@ -482,38 +453,12 @@ PREDICATE(joint_names, 1) {
 PREDICATE(joint_type, 2) {
     try {
         std::string joint_name((char*) PL_A1);
-        switch (get_joint(joint_name)->type) {
-            case (urdf::Joint::REVOLUTE): {
-                PL_A2 = "revolute";
-                return true;
-            }
-            case (urdf::Joint::PRISMATIC): {
-                PL_A2 = "prismatic";
-                return true;
-            }
-            case (urdf::Joint::CONTINUOUS): {
-                PL_A2 = "continuous";
-                return true;
-            }
-            case (urdf::Joint::FIXED): {
-                PL_A2 = "fixed";
-                return true;
-            }
-            case (urdf::Joint::PLANAR): {
-                PL_A2 = "planar";
-                return true;
-            }
-            case (urdf::Joint::FLOATING): {
-                PL_A2 = "floating";
-                return true;
-            }
-            case (urdf::Joint::UNKNOWN): {
-                PL_A2 = "unknown";
-                return true;
-            }
-            default:
-                throw std::runtime_error("Found undefined joint type for joint'" + joint_name + "'.");
-        }
+        // Note: The order of strings in this vector should be the same as the definition of the corresponding
+        //       enums in urdf::Joint.
+        std::vector<std::string> type_names =
+                {"unknown", "revolute", "continuous", "prismatic", "floating", "planar", "fixed"};
+        PL_A2 = type_names[get_joint(joint_name)->type].c_str();
+        return true;
     } catch (const std::runtime_error& e) {
         ROS_ERROR("%s", e.what());
         return false;
