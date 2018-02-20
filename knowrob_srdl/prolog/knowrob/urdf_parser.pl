@@ -72,7 +72,9 @@
       assert_dynamics/1,
       assert_safety_controller/1,
       assert_calibration/1,
-      assert_link_properties/1
+      assert_link_properties/1,
+      assert_pose/2,
+      assert_inertial_props/1
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -392,19 +394,8 @@ assert_kin_limits(Joint) :-
 
 assert_origin(Joint) :-
   joint_name(Joint, JointName),!,
-  joint_origin(JointName, pose([X,Y,Z],[QX,QY,QZ,QW])),
-  owl_instance_from_class(urdf:'Vector3d', Position),
-  rdf_assert(Position, urdf:'x', literal(type(xsd:double, X))),
-  rdf_assert(Position, urdf:'y', literal(type(xsd:double, Y))),
-  rdf_assert(Position, urdf:'z', literal(type(xsd:double, Z))),
-  owl_instance_from_class(urdf:'Quaternion', Orientation),
-  rdf_assert(Orientation, urdf:'x', literal(type(xsd:double, QX))),
-  rdf_assert(Orientation, urdf:'y', literal(type(xsd:double, QY))),
-  rdf_assert(Orientation, urdf:'z', literal(type(xsd:double, QZ))),
-  rdf_assert(Orientation, urdf:'w', literal(type(xsd:double, QW))),
-  owl_instance_from_class(urdf:'Transform', Origin),
-  rdf_assert(Origin, urdf:'hasPosition', Position),
-  rdf_assert(Origin, urdf:'hasOrientation', Orientation),
+  joint_origin(JointName, Pose),
+  assert_pose(Pose, Origin),
   rdf_assert(Joint, urdf:'hasOrigin', Origin).
 
 assert_dynamics(Joint) :-
@@ -445,5 +436,38 @@ assert_link_properties(Robot) :-
 
 assert_link_properties(Link) :-
   owl_individual_of(Link, urdf:'Link'),!,
+  link_name(Link, LinkName),
+  ((link_inertial(LinkName, _, _, _)) -> (assert_inertial_props(Link)) ; (true)),
   %% TODO: complete me
   true.
+
+assert_pose(pose([X,Y,Z],[QX,QY,QZ,QW]), Pose) :-
+  owl_instance_from_class(urdf:'Vector3d', Position),
+  rdf_assert(Position, urdf:'x', literal(type(xsd:double, X))),
+  rdf_assert(Position, urdf:'y', literal(type(xsd:double, Y))),
+  rdf_assert(Position, urdf:'z', literal(type(xsd:double, Z))),
+  owl_instance_from_class(urdf:'Quaternion', Orientation),
+  rdf_assert(Orientation, urdf:'x', literal(type(xsd:double, QX))),
+  rdf_assert(Orientation, urdf:'y', literal(type(xsd:double, QY))),
+  rdf_assert(Orientation, urdf:'z', literal(type(xsd:double, QZ))),
+  rdf_assert(Orientation, urdf:'w', literal(type(xsd:double, QW))),
+  owl_instance_from_class(urdf:'Transform', Pose),
+  rdf_assert(Pose, urdf:'hasPosition', Position),
+  rdf_assert(Pose, urdf:'hasOrientation', Orientation).
+
+assert_inertial_props(Link) :-
+  link_name(Link, LinkName),!,
+  link_inertial(LinkName, Pose, Mass, [Ixx, Ixy, Ixz, Iyy, Iyz, Izz]),
+  assert_pose(Pose, Origin),
+  owl_instance_from_class(urdf:'InertialProperties', Inertial),
+  rdf_assert(Inertial, urdf:'hasOrigin', Origin),
+  rdf_assert(Inertial, urdf:'mass',literal(type(xsd:double, Mass))),
+  owl_instance_from_class(urdf:'InertiaMatrix', InertiaMat),
+  rdf_assert(InertiaMat, urdf:'ixx',literal(type(xsd:double, Ixx))),
+  rdf_assert(InertiaMat, urdf:'ixy',literal(type(xsd:double, Ixy))),
+  rdf_assert(InertiaMat, urdf:'ixz',literal(type(xsd:double, Ixz))),
+  rdf_assert(InertiaMat, urdf:'iyy',literal(type(xsd:double, Iyy))),
+  rdf_assert(InertiaMat, urdf:'iyz',literal(type(xsd:double, Iyz))),
+  rdf_assert(InertiaMat, urdf:'izz',literal(type(xsd:double, Izz))),
+  rdf_assert(Inertial, urdf:'hasInertiaMatrix', InertiaMat),
+  rdf_assert(Link, urdf:'hasInertialProperties', Inertial).

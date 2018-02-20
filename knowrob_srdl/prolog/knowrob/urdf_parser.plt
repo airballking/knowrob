@@ -262,7 +262,6 @@ test(link_visual_shape_laser_tilt_mount_link) :-
 
 test(link_visual_material_laser_tilt_mount_link) :-
   link_visual_material(laser_tilt_mount_link, 0, Name, Color, Filename),
-  print(Name), print(Color), print(Filename),
   Name = 'Red',
   Color = rgba(0.800000011920929, 0.0, 0.0, 1.0),
   Filename = ''.
@@ -589,5 +588,27 @@ test(owl_mimic_r_gripper_r_finger_joint) :-
   joint_name(MimickedJoint, r_gripper_l_finger_joint),
   owl_has(MimicProps, urdf:'mimicFactor', literal(type(xsd:double, 1.0))),
   owl_has(MimicProps, urdf:'mimicOffset', literal(type(xsd:double, 0.0))),!.
+
+test(owl_inertial_props_base_link) :-
+  link_name(Link, base_link),
+  owl_has(Link, urdf:'hasInertialProperties', InertialProps),
+  owl_has(InertialProps, urdf:'mass', literal(type(xsd:double, 116.0))),
+  owl_has(InertialProps, urdf:'hasOrigin', Origin),
+  owl_has(InertialProps, urdf:'hasInertiaMatrix', InertiaMat),
+  owl_has(Origin, urdf:'hasPosition', Position),
+  owl_has(Origin, urdf:'hasOrientation', Orientation),
+  owl_has(Position, urdf:'x', literal(type(xsd:double, -0.061))),
+  owl_has(Position, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Position, urdf:'z', literal(type(xsd:double, 0.1465))),
+  owl_has(Orientation, urdf:'x', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'z', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'w', literal(type(xsd:double, 1.0))),
+  owl_has(InertiaMat, urdf:'ixx', literal(type(xsd:double, 5.652232699207))),
+  owl_has(InertiaMat, urdf:'ixy', literal(type(xsd:double, -0.009719934438))),
+  owl_has(InertiaMat, urdf:'ixz', literal(type(xsd:double, 1.293988226423))),
+  owl_has(InertiaMat, urdf:'iyy', literal(type(xsd:double, 5.669473158652))),
+  owl_has(InertiaMat, urdf:'iyz', literal(type(xsd:double, -0.007379583694))),
+  owl_has(InertiaMat, urdf:'izz', literal(type(xsd:double, 3.683196351726))),!.
 
 :- end_tests(urdf_parser).
