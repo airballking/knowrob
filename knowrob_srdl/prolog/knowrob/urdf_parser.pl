@@ -74,7 +74,9 @@
       assert_calibration/1,
       assert_link_properties/1,
       assert_pose/2,
-      assert_inertial_props/1
+      assert_inertial_props/1,
+      assert_visual_shapes/1,
+      assert_visual_shape/2
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -438,6 +440,7 @@ assert_link_properties(Link) :-
   owl_individual_of(Link, urdf:'Link'),!,
   link_name(Link, LinkName),
   ((link_inertial(LinkName, _, _, _)) -> (assert_inertial_props(Link)) ; (true)),
+  ((link_num_visuals(LinkName, Num), Num>0) -> (assert_visual_shapes(Link)) ; (true)),
   %% TODO: complete me
   true.
 
@@ -471,3 +474,14 @@ assert_inertial_props(Link) :-
   rdf_assert(InertiaMat, urdf:'izz',literal(type(xsd:double, Izz))),
   rdf_assert(Inertial, urdf:'hasInertiaMatrix', InertiaMat),
   rdf_assert(Link, urdf:'hasInertialProperties', Inertial).
+
+assert_visual_shapes(Link) :-
+  link_name(Link, LinkName),!,
+  link_num_visuals(LinkName, Num),
+  HighestIndex is Num-1,
+  forall(between(0, HighestIndex, Index), assert_visual_shape(Link, Index)).
+
+assert_visual_shape(Link, Index) :-
+  print(Index),
+  % TODO: complete me
+  true.
