@@ -173,13 +173,6 @@ bool link_has_collision_with_index(const urdf::LinkConstSharedPtr link, long ind
             (link->collision_array[index]);
 }
 
-std::string geometry_type_name(const urdf::GeometryConstSharedPtr& geometry) {
-    // Note: The order of strings in this vector should be the same as the
-    //       definition of the corresponding enums in urdf::Geometry.
-    std::vector<std::string> type_names = {"sphere", "box", "cylinder", "mesh"};
-    return type_names[geometry->type];
-}
-
 PREDICATE(root_link_name, 1) {
     try {
         PL_A1 = get_robot_model()->root_link_->name.c_str();
@@ -236,54 +229,7 @@ PREDICATE(link_num_visuals, 2) {
     }
 }
 
-PREDICATE(link_visual_type, 3) {
-    try {
-        std::string link_name((char*) PL_A1);
-        long visual_index = (long) PL_A2;
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link_has_visual_with_index(link, visual_index) ||
-                !link->visual_array[visual_index]->geometry)
-            return false;
-        PL_A3 = geometry_type_name(link->visual_array[visual_index]->geometry).c_str();
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_visual_name, 3) {
-    try {
-        std::string link_name((char*) PL_A1);
-        long index = (long) PL_A2;
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link_has_visual_with_index(link, index) ||
-                (link->visual_array[index]->name.compare("") == 0))
-            return false;
-        PL_A3 = link->visual_array[index]->name.c_str();
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_visual_origin, 3) {
-    try {
-        std::string link_name((char*) PL_A1);
-        long index = (long) PL_A2;
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link_has_visual_with_index(link, index))
-            return false;
-        PL_A3 = to_prolog_pose(link->visual_array[index]->origin);
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_visual_geometry, 3) {
+PREDICATE(link_visual_shape, 5) {
     try {
         std::string link_name((char*) PL_A1);
         long index = (long) PL_A2;
@@ -291,7 +237,9 @@ PREDICATE(link_visual_geometry, 3) {
         if (!link_has_visual_with_index(link, index) ||
                 !link->visual_array[index]->geometry)
             return false;
-        PL_A3 = to_prolog_geometry(link->visual_array[index]->geometry);
+        PL_A3 = link->visual_array[index]->name.c_str();
+        PL_A4 = to_prolog_pose(link->visual_array[index]->origin);
+        PL_A5 = to_prolog_geometry(link->visual_array[index]->geometry);
         return true;
     } catch (const std::runtime_error& e) {
         ROS_ERROR("%s", e.what());
@@ -299,7 +247,7 @@ PREDICATE(link_visual_geometry, 3) {
     }
 }
 
-PREDICATE(link_material_name, 3) {
+PREDICATE(link_visual_material, 5) {
     try {
         std::string link_name((char*) PL_A1);
         long index = (long) PL_A2;
@@ -308,39 +256,8 @@ PREDICATE(link_material_name, 3) {
                 !link->visual_array[index]->material)
             return false;
         PL_A3 = link->visual_array[index]->material->name.c_str();
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_material_color, 3) {
-    try {
-        std::string link_name((char*) PL_A1);
-        long index = (long) PL_A2;
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link_has_visual_with_index(link, index) ||
-                !link->visual_array[index]->material)
-            return false;
-        PL_A3 = to_prolog_rgba(link->visual_array[index]->material->color);
-        return true;
-    } catch (const std::runtime_error& e) {
-        ROS_ERROR("%s", e.what());
-        return false;
-    }
-}
-
-PREDICATE(link_material_texture, 3) {
-    try {
-        std::string link_name((char*) PL_A1);
-        long index = (long) PL_A2;
-        urdf::LinkConstSharedPtr link = get_link(link_name);
-        if (!link_has_visual_with_index(link, index) ||
-                !link->visual_array[index]->material ||
-                link->visual_array[index]->material->texture_filename.compare("") == 0)
-            return false;
-        PL_A3 = link->visual_array[index]->material->texture_filename.c_str();
+        PL_A4 = to_prolog_rgba(link->visual_array[index]->material->color);
+        PL_A5 = link->visual_array[index]->material->texture_filename.c_str();
         return true;
     } catch (const std::runtime_error& e) {
         ROS_ERROR("%s", e.what());

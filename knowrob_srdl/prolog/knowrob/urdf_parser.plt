@@ -1,6 +1,6 @@
 /*
-  Copyright (C) 2018 Georg Bartels
-  All rights reserved.
+  copyright (c) 2018 georg bartels
+  all rights reserved.
 
   Redistribution and use in source and binary forms, with or without
   modification, are permitted provided that the following conditions are met:
@@ -225,63 +225,53 @@ test(link_num_visuals_pr2_r_gripper_motor_accelerometer_link) :-
   link_num_visuals(r_gripper_motor_accelerometer_link, N),
   N=1.
 
-test(link_visual_type_pr2_r_gripper_motor_accelerometer_link) :-
-  link_visual_type(r_gripper_motor_accelerometer_link, 0, box).
+test(link_visual_shape_r_gripper_motor_accelerometer_link) :-
+  link_visual_shape(r_gripper_motor_accelerometer_link, 0, Name, Origin, Geometry),
+  Name = '',
+  Origin = pose([0.0,0.0,0.0],[0.0, 0.0, 0.0, 1.0]),
+  Geometry = box(0.001, 0.001, 0.001).
 
-test(link_visual_type_pr2_r_gripper_motor_slider_link) :-
-  link_visual_type(r_gripper_motor_slider_link, 0, cylinder).
+test(link_visual_shape_r_gripper_motor_slider_link) :-
+  link_visual_shape(r_gripper_motor_slider_link, 0, Name, Origin, Geometry),
+  Name = '',
+  Origin = pose([0.0,0.0,0.0],[0.7071080798594737, 0.0, 0.0, 0.7071054825112364]),
+  Geometry = cylinder(0.025, 0.002).
 
-test(link_visual_type_pr2_head_mount_kinect_ir_link) :-
-  link_visual_type(head_mount_kinect_ir_link, 0, sphere).
+test(link_visual_shape_head_mount_kinect_ir_link) :-
+  link_visual_shape(head_mount_kinect_ir_link, 0, Name, Origin, Geometry),
+  Geometry = sphere(0.0005),
+  Name = '',
+  Origin = pose([0.0,0.0,0.0],[0.0, 0.0, 0.0, 1.0]).
 
-test(link_visual_type_negative_out_of_bounds, fail) :-
-  link_visual_type(head_mount_kinect_ir_link, -1, _).
+test(link_visual_shape_head_mount_link) :-
+  link_visual_shape(head_mount_link, 0, _, _, Geometry),
+  Geometry = mesh('package://pr2_description/meshes/sensors/kinect_prosilica_v0/115x100_swept_back--coarse.STL', [0.001, 0.001, 0.001]).
 
-test(link_visual_type_positive_out_of_bounds, fail) :-
-  link_visual_type(head_mount_kinect_ir_link, 1, _).
+test(link_visual_shape_negative_out_of_bounds, fail) :-
+  link_visual_shape(head_mount_kinect_ir_link, -1, _, _, _).
 
-test(link_visual_name_pr2_head_mount_kinect_ir_link, fail) :-
-  link_visual_name(head_mount_kinect_ir_link, 0, _).
+test(link_visual_shape_positive_out_of_bounds, fail) :-
+  link_visual_shape(head_mount_kinect_ir_link, 1, _, _, _).
 
-test(link_origin_pr2_r_gripper_motor_slider_link) :-
-  link_visual_origin(r_gripper_motor_slider_link, 0,
-  pose([0.0,0.0,0.0],[0.7071080798594737, 0.0, 0.0, 0.7071054825112363])).
+test(link_visual_shape_r_gripper_led_frame, fail) :-
+  link_visual_shape(r_gripper_led_frame, 0, _, _, _).
 
-test(link_visual_geometry_pr2_r_gripper_motor_accelerometer_link) :-
-  link_visual_geometry(r_gripper_motor_accelerometer_link, 0, box([0.001, 0.001, 0.001])).
+test(link_visual_shape_laser_tilt_mount_link) :-
+  link_visual_shape(laser_tilt_mount_link, 0, _, _, Geometry),
+  Geometry = mesh('package://pr2_description/meshes/tilting_laser_v0/tilting_hokuyo.dae', [1.0, 1.0, 1.0]).
 
-test(link_visual_geometry_pr2_head_mount_kinect_ir_link) :-
-  link_visual_geometry(head_mount_kinect_ir_link, 0, sphere([0.0005])).
+test(link_visual_material_laser_tilt_mount_link) :-
+  link_visual_material(laser_tilt_mount_link, 0, Name, Color, Filename),
+  print(Name), print(Color), print(Filename),
+  Name = 'Red',
+  Color = rgba(0.800000011920929, 0.0, 0.0, 1.0),
+  Filename = ''.
 
-test(link_visual_geometry_pr2_r_gripper_motor_slider_link) :-
-  link_visual_geometry(r_gripper_motor_slider_link, 0, cylinder([0.002, 0.025])).
-
-test(link_visual_geometry_pr2_head_mount_link) :-
-  link_visual_geometry(head_mount_link, 0, mesh('package://pr2_description/meshes/sensors/kinect_prosilica_v0/115x100_swept_back--coarse.STL', [0.001, 0.001, 0.001])).
-
-test(link_visual_geometry_pr2_r_gripper_led_frame, fail) :-
-  link_visual_geometry(r_gripper_led_frame, 0, _).
-
-test(link_visual_geometry_pr2_laser_tilt_mount_link) :-
-  link_visual_geometry(laser_tilt_mount_link, 0, mesh('package://pr2_description/meshes/tilting_laser_v0/tilting_hokuyo.dae', [1.0, 1.0, 1.0])).
-
-test(link_material_name_pr2_laser_tilt_mount_link) :-
-  link_material_name(laser_tilt_mount_link, 0, 'Red').
-
-test(link_material_color_pr2_laser_tilt_mount_link) :-
-  link_material_name(laser_tilt_mount_link, 0, rgba([0.8, 0.0, 0.0, 1.0])).
-
-test(link_material_texture_pr2_laser_tilt_mount_link, fail) :-
-  link_material_texture(laser_tilt_mount_link, 0, _).
-
-test(link_material_name_pr2_fl_caster_rotation_link) :-
-  link_material_name(fl_caster_rotation_link, 0, 'Caster').
-
-test(link_material_color_pr2_fl_caster_rotation_link) :-
-  link_material_name(fl_caster_rotation_link, 0, rgba([0.0, 0.0, 0.0, 1.0])).
-
-test(link_material_texture_pr2_fl_caster_rotation_link) :-
-  link_material_texture(fl_caster_rotation_link, 0, 'package://pr2_description/materials/textures/pr2_caster_texture.png').
+test(link_visual_material_fl_caster_rotation_link) :-
+  link_visual_material(fl_caster_rotation_link, 0, Name, Color, Filename),
+  Name = 'Caster',
+  Color = rgba(0.0, 0.0, 0.0, 1.0),
+  Filename = 'package://pr2_description/materials/textures/pr2_caster_texture.png'.
 
 test(link_num_collisions_pr2_base_link) :-
   link_num_collisions(base_link, N),

@@ -35,12 +35,8 @@
       link_names/1,
       link_inertial/4,
       link_num_visuals/2,
-      link_visual_type/3,
-      link_visual_origin/3,
-      link_visual_geometry/3,
-      link_material_name/3,
-      link_material_color/3,
-      link_material_texture/3,
+      link_visual_shape/5,
+      link_visual_material/5,
       link_num_collisions/2,
       link_collision/5,
       joint_names/1,
@@ -152,31 +148,18 @@
 %
 % Get the number of visual elements of a link.
 
-%% link_visual_type(+LinkName, +Index, -Type) is semidet.
+%% link_visual_shape(+LinkName, +Index, -Name, -Origin, -Geometry) is semidet.
 %
-% Get the type of a particular visual element of a link.
-% Possible types: box, sphere, cylinder, mesh
+% Get the shape properties of a particular visual element of a link.
 %
-% Note: Links can have several visuals elements, the first
-% one has index 0.
-
-%% link_visual_origin(+LinkName, +Index, -Origin) is semidet.
+% Names for visual elements are optional, defaulting to the empty string.
 %
-% Get the origin of a particular visual element of a link
-% as a pose w.r.t. to the link frame.
+% The origin of a particular visual element of a link is represented
+% as a pose w.r.t. to the link frame. Poses are coded as a compound
+% term: pose([X,Y,Z],[QX,QY,QZ,QW]), with the orientation represented
+% as a Quaternion.
 %
-% Poses are coded as a compound term: pose([X,Y,Z],[QX,QY,QZ,QW]),
-% with the orientation represented as Quaternion.
-%
-% Note: Links can have several visuals elements, the first
-% one has index 0.
-
-%% link_visual_geometry(+LinkName, +Index, -Geometry) is semidet.
-%
-% Get the geometry of a particular visual element of a link.
-%
-% Depending on the type of visual element, the geometry is
-% coded differently:
+% The geometry of a visual element is coded depending on its type:
 % - SPHERE: sphere([Radius])
 % - CYLINDER: cylinder([Radius, Length])
 % - BOX: box([X, Y, Z])
@@ -185,28 +168,15 @@
 % Note: Links can have several visuals elements, the first
 % one has index 0.
 
-%% link_material_name(+LinkName, +Index, -Name) is semidet.
+%% link_visual_material(+LinkName, +Index, -Name, -Color, -Filename) is semidet.
 %
-% Get the name of a material of a particular visual element
+% Get the material properties of a particular visual element
 % of a link.
 %
-% Note: Links can have several visuals elements, the first
-% one has index 0.
-
-%% link_material_color(+LinkName, +Index, -Color) is semidet.
+% Colors of visual elements are coded as compound terms: rgba([R, G, B, A]).
 %
-% Get the color of a material of a particular visual element
-% of a link.
-%
-% Colors are coded as compound terms: rgba([R, G, B, A]).
-%
-% Note: Links can have several visuals elements, the first
-% one has index 0.
-
-%% link_material_texture(+LinkName, +Index, -FileName) is semidet.
-%
-% Get the filename of a texture of a particular visual element
-% of a link.
+% Optionally, the filename of a texture file for a particular visual
+% element of a link can be specified. Defaults to the empty string.
 %
 % Note: Links can have several visuals elements, the first
 % one has index 0.
