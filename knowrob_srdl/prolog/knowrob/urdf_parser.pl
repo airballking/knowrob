@@ -75,8 +75,8 @@
       assert_link_properties/1,
       assert_pose/2,
       assert_inertial_props/1,
-      assert_visual_shapes/1,
-      assert_visual_shape/2
+      assert_visuals/1,
+      assert_visual/2
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -177,7 +177,7 @@
 % Get the material properties of a particular visual element
 % of a link.
 %
-% Colors of visual elements are coded as compound terms: rgba([R, G, B, A]).
+% Colors of visual elements are coded as compound terms: rgba(R, G, B, A).
 %
 % Optionally, the filename of a texture file for a particular visual
 % element of a link can be specified. Defaults to the empty string.
@@ -440,7 +440,7 @@ assert_link_properties(Link) :-
   owl_individual_of(Link, urdf:'Link'),!,
   link_name(Link, LinkName),
   ((link_inertial(LinkName, _, _, _)) -> (assert_inertial_props(Link)) ; (true)),
-  ((link_num_visuals(LinkName, Num), Num>0) -> (assert_visual_shapes(Link)) ; (true)),
+  ((link_num_visuals(LinkName, Num), Num>0) -> (assert_visuals(Link)) ; (true)),
   %% TODO: complete me
   true.
 
@@ -475,11 +475,11 @@ assert_inertial_props(Link) :-
   rdf_assert(Inertial, urdf:'hasInertiaMatrix', InertiaMat),
   rdf_assert(Link, urdf:'hasInertialProperties', Inertial).
 
-assert_visual_shapes(Link) :-
+assert_visuals(Link) :-
   link_name(Link, LinkName),!,
   link_num_visuals(LinkName, Num),
   HighestIndex is Num-1,
-  forall(between(0, HighestIndex, Index), assert_visual_shape(Link, Index)).
+  forall(between(0, HighestIndex, Index), assert_visual(Link, Index)).
 
 
 assert_visual_shape(Link, Index) :-
@@ -500,7 +500,13 @@ assert_visual_shape(Link, Index) :-
 
   % create geometry individual and connect to visual
   assert_geometry(Geometry, GeometryIndividual),
-  rdf_assert(Visual, urdf:'hasGeometry', GeometryIndividual).
+  rdf_assert(Visual, urdf:'hasGeometry', GeometryIndividual),
+
+  % optionally, create material individual and connect to visual
+  ((link_visual_material(LinkName, Index, Name, Color, Filename)) ->
+   (assert_material(Name, Color, Filename, Material),
+    rdf_assert(Visual, urdf:'hasMaterialProperties', Material)) ;
+   (true)).
 
 assert_geometry(GeometryIn, GeometryOut) :-
   % CASE 1: we have a sphere visual
@@ -508,12 +514,14 @@ assert_geometry(GeometryIn, GeometryOut) :-
    (owl_instance_from_class(urdf:'Sphere', GeometryOut),
     rdf_assert(GeometryOut, urdf:'radius', literal(type(xsd:double, Rad)))) ;
    (true)),
+
   % CASE 2: we have a cylinder visual
   ((GeometryIn = cylinder(Rad, Len)) ->
    (owl_instance_from_class(urdf:'Cylinder', GeometryOut),
     rdf_assert(GeometryOut, urdf:'length', literal(type(xsd:double, Len))),
     rdf_assert(GeometryOut, urdf:'radius', literal(type(xsd:double, Rad)))) ;
    (true)),
+
   % CASE 3: we have a box visual
   ((GeometryIn = box(X,Y,Z)) ->
    (owl_instance_from_class(urdf:'Box', GeometryOut),
@@ -521,6 +529,7 @@ assert_geometry(GeometryIn, GeometryOut) :-
     rdf_assert(GeometryOut, urdf:'y', literal(type(xsd:double, Y))),
     rdf_assert(GeometryOut, urdf:'z', literal(type(xsd:double, Z)))) ;
    (true)),
+
   % CASE 4: we have a mesh visual
   ((GeometryIn = mesh(Filename, [X,Y,Z])) ->
    (owl_instance_from_class(urdf:'Mesh', GeometryOut),
@@ -531,3 +540,21 @@ assert_geometry(GeometryIn, GeometryOut) :-
     rdf_assert(Scale, urdf:'y', literal(type(xsd:double, Y))),
     rdf_assert(Scale, urdf:'z', literal(type(xsd:double, Z)))) ;
    (true)).
+
+assert_material(Name, rgba(R,G,B,A), Filename, Material) :-
+  owl_instance_from_class(urdf:'MaterialProperties', Material),
+
+print(Name),
+  % optionally, assert name
+  ((string_length(Name, Len), Len>0) -> (rdf_assert(Material, urdf:'name', literal(type(xsd:string, Name)))) ; (true)),
+
+  % optionally, assert filename of texture
+  ((string_length(Filename, Len), Len>0) -> (rdf_assert(Material, urdf:'filename', literal(type(xsd:string, Filename)))) ; (true)),
+
+  % create color individual and connect to material individual
+  owl_instance_from_class(urdf:'Color', Color),
+  rdf_assert(Material, urdf:'hasColor', Color),
+  rdf_assert(Color, urdf:'r', literal(type(xsd:double, R))),
+  rdf_assert(Color, urdf:'g', literal(type(xsd:double, G))),
+  rdf_assert(Color, urdf:'b', literal(type(xsd:double, B))),
+  rdf_assert(Color, urdf:'a', literal(type(xsd:double, A))).
