@@ -481,7 +481,53 @@ assert_visual_shapes(Link) :-
   HighestIndex is Num-1,
   forall(between(0, HighestIndex, Index), assert_visual_shape(Link, Index)).
 
+
 assert_visual_shape(Link, Index) :-
-  print(Index),
-  % TODO: complete me
-  true.
+  % get all required info
+  link_name(Link, LinkName),
+  link_visual_shape(LinkName, Index, Name, Pose, Geometry),
+
+  % create visual individual and connect to link
+  owl_instance_from_class(urdf:'VisualProperties', Visual),
+  rdf_assert(Link, urdf:'hasVisualProperties', Visual),
+
+  % optionally, add visual name
+  ((string_length(Name, Len), Len>0) -> (rdf_assert(Visual, urdf:'name', literal(type(xsd:string, Name)))) ; (true)),
+
+  % create origin individual and connect to visual
+  assert_pose(Pose, Origin),
+  rdf_assert(Visual, urdf:'hasOrigin', Origin),
+
+  % create geometry individual and connect to visual
+  assert_geometry(Geometry, GeometryIndividual),
+  rdf_assert(Visual, urdf:'hasGeometry', GeometryIndividual).
+
+assert_geometry(GeometryIn, GeometryOut) :-
+  % CASE 1: we have a sphere visual
+  ((GeometryIn = sphere(Rad)) ->
+   (owl_instance_from_class(urdf:'Sphere', GeometryOut),
+    rdf_assert(GeometryOut, urdf:'radius', literal(type(xsd:double, Rad)))) ;
+   (true)),
+  % CASE 2: we have a cylinder visual
+  ((GeometryIn = cylinder(Rad, Len)) ->
+   (owl_instance_from_class(urdf:'Cylinder', GeometryOut),
+    rdf_assert(GeometryOut, urdf:'length', literal(type(xsd:double, Len))),
+    rdf_assert(GeometryOut, urdf:'radius', literal(type(xsd:double, Rad)))) ;
+   (true)),
+  % CASE 3: we have a box visual
+  ((GeometryIn = box(X,Y,Z)) ->
+   (owl_instance_from_class(urdf:'Box', GeometryOut),
+    rdf_assert(GeometryOut, urdf:'x', literal(type(xsd:double, X))),
+    rdf_assert(GeometryOut, urdf:'y', literal(type(xsd:double, Y))),
+    rdf_assert(GeometryOut, urdf:'z', literal(type(xsd:double, Z)))) ;
+   (true)),
+  % CASE 4: we have a mesh visual
+  ((GeometryIn = mesh(Filename, [X,Y,Z])) ->
+   (owl_instance_from_class(urdf:'Mesh', GeometryOut),
+    owl_instance_from_class(urdf:'Vector3d', Scale),
+    rdf_assert(GeometryOut, urdf:'filename', literal(type(xsd:string, Filename))),
+    rdf_assert(GeometryOut, urdf:'hasScale', Scale),
+    rdf_assert(Scale, urdf:'x', literal(type(xsd:double, X))),
+    rdf_assert(Scale, urdf:'y', literal(type(xsd:double, Y))),
+    rdf_assert(Scale, urdf:'z', literal(type(xsd:double, Z)))) ;
+   (true)).

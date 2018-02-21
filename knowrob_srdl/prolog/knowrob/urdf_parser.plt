@@ -611,4 +611,41 @@ test(owl_inertial_props_base_link) :-
   owl_has(InertiaMat, urdf:'iyz', literal(type(xsd:double, -0.007379583694))),
   owl_has(InertiaMat, urdf:'izz', literal(type(xsd:double, 3.683196351726))),!.
 
+test(owl_visual_props_head_mount_link) :-
+  link_name(Link, head_mount_link),
+
+  % check that we have really only 1 visual element
+  findall(Visual, owl_has(Link, urdf:'hasVisualProperties', Visual), Visuals),
+  length(Visuals, 1),
+  last(Visuals, Visual),
+  owl_individual_of(Visual, urdf:'VisualProperties'),!,
+
+  % verify origin of visual element
+  owl_has(Visual, urdf:'hasOrigin', Origin),
+  owl_has(Origin, urdf:'hasPosition', Position),
+  owl_has(Origin, urdf:'hasOrientation', Orientation),
+  owl_individual_of(Origin, urdf:'Transform'),!,
+  owl_individual_of(Position, urdf:'Vector3d'),!,
+  owl_individual_of(Orientation, urdf:'Quaternion'),!,
+  owl_has(Position, urdf:'x', literal(type(xsd:double, 0.0))),
+  owl_has(Position, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Position, urdf:'z', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'x', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'z', literal(type(xsd:double, 0.0))),
+  owl_has(Orientation, urdf:'w', literal(type(xsd:double, 1.0))),
+
+  % verify geometry of visual element
+  owl_has(Visual, urdf:'hasGeometry', Geometry),
+  owl_individual_of(Geometry, urdf:'Mesh'),!,
+  owl_has(Geometry, urdf:'filename', literal(type(xsd:string, 'package://pr2_description/meshes/sensors/kinect_prosilica_v0/115x100_swept_back--coarse.STL'))),
+  owl_has(Geometry, urdf:'hasScale', Scale),
+  owl_individual_of(Scale, urdf:'Vector3d'),!,
+  owl_has(Scale, urdf:'x', literal(type(xsd:double, 0.001))),
+  owl_has(Scale, urdf:'y', literal(type(xsd:double, 0.001))),
+  owl_has(Scale, urdf:'z', literal(type(xsd:double, 0.001))),!.
+%%      <material name="gray">
+%%        <color rgba="0.5 0.5 0.5 1"/>
+%%      </material>
+
 :- end_tests(urdf_parser).
