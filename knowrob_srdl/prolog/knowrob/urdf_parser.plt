@@ -268,7 +268,7 @@ test(link_visual_material_laser_tilt_mount_link) :-
 
 test(link_visual_material_head_mount_link) :-
   link_visual_material(head_mount_link, 0, Name, Color, Filename),
-  Name = 'gray',
+  Name = gray,
   Color = rgba(0.5, 0.5, 0.5, 1.0),
   Filename = ''.
 
@@ -652,23 +652,20 @@ test(owl_visual_props_head_mount_link) :-
   owl_has(Scale, urdf:'z', literal(type(xsd:double, 0.001))),
 
   % verify material of visual element
-  print(a),
   owl_has(Visual, urdf:'hasMaterialProperties', Material),
-    print(a),
-%  owl_has(Material, urdf:'name', literal(type(xsd:string, gray))),
-  owl_has(Material, urdf:'name', UrdfName),
-    print(UrdfName),
+  owl_individual_of(Material, urdf:'MaterialProperties'),!,
+  owl_has(Material, urdf:'name', literal(type(xsd:string, 'gray'))), % TODO: figure out way this breaks
   owl_has(Material, urdf:'hasColor', Color),
-    print(a),
   owl_has(Color, urdf:'r', literal(type(xsd:double, 0.5))),
-    print(a),
   owl_has(Color, urdf:'g', literal(type(xsd:double, 0.5))),
-    print(a),
   owl_has(Color, urdf:'b', literal(type(xsd:double, 0.5))),
-    print(a),
   owl_has(Color, urdf:'a', literal(type(xsd:double, 1.0))),!.
-%%      <material name="gray">
-%%        <color rgba="0.5 0.5 0.5 1"/>
-%%      </material>
+
+test(test_owl_visual_props_fl_caster_rotation_link) :-
+  link_name(Link, fl_caster_rotation_link),
+  owl_has(Link, urdf:'hasVisualProperties', Visual),
+  owl_has(Visual, urdf:'hasMaterialProperties', Material),
+  owl_has(Material, urdf:'name', literal(type(xsd:string, 'Caster'))),
+  owl_has(Material, urdf:'filename', literal(type(xsd:string, 'package://pr2_description/materials/textures/pr2_caster_texture.png'))),!.
 
 :- end_tests(urdf_parser).

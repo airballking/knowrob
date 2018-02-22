@@ -75,8 +75,10 @@
       assert_link_properties/1,
       assert_pose/2,
       assert_inertial_props/1,
+      assert_geometry/2,
       assert_visuals/1,
-      assert_visual/2
+      assert_visual/2,
+      assert_material/4
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -176,6 +178,9 @@
 %
 % Get the material properties of a particular visual element
 % of a link.
+%
+% Optionally, a name for the particular visual element
+% of a link can be specified. Defaults to the empty string.
 %
 % Colors of visual elements are coded as compound terms: rgba(R, G, B, A).
 %
@@ -482,7 +487,7 @@ assert_visuals(Link) :-
   forall(between(0, HighestIndex, Index), assert_visual(Link, Index)).
 
 
-assert_visual_shape(Link, Index) :-
+assert_visual(Link, Index) :-
   % get all required info
   link_name(Link, LinkName),
   link_visual_shape(LinkName, Index, Name, Pose, Geometry),
@@ -503,8 +508,8 @@ assert_visual_shape(Link, Index) :-
   rdf_assert(Visual, urdf:'hasGeometry', GeometryIndividual),
 
   % optionally, create material individual and connect to visual
-  ((link_visual_material(LinkName, Index, Name, Color, Filename)) ->
-   (assert_material(Name, Color, Filename, Material),
+  ((link_visual_material(LinkName, Index, Matname, Color, Filename)) ->
+   (assert_material(Matname, Color, Filename, Material),
     rdf_assert(Visual, urdf:'hasMaterialProperties', Material)) ;
    (true)).
 
@@ -541,20 +546,20 @@ assert_geometry(GeometryIn, GeometryOut) :-
     rdf_assert(Scale, urdf:'z', literal(type(xsd:double, Z)))) ;
    (true)).
 
-assert_material(Name, rgba(R,G,B,A), Filename, Material) :-
+assert_material(Matname, Color, Filename, Material) :-
   owl_instance_from_class(urdf:'MaterialProperties', Material),
 
-print(Name),
   % optionally, assert name
-  ((string_length(Name, Len), Len>0) -> (rdf_assert(Material, urdf:'name', literal(type(xsd:string, Name)))) ; (true)),
+  ((string_length(Matname, Mnlen), Mnlen>0) -> (rdf_assert(Material, urdf:'name', literal(type(xsd:string, Matname)))) ; (true)),
 
   % optionally, assert filename of texture
-  ((string_length(Filename, Len), Len>0) -> (rdf_assert(Material, urdf:'filename', literal(type(xsd:string, Filename)))) ; (true)),
+  ((string_length(Filename, Flen), Flen>0) -> (rdf_assert(Material, urdf:'filename', literal(type(xsd:string, Filename)))) ; (true)),
 
   % create color individual and connect to material individual
-  owl_instance_from_class(urdf:'Color', Color),
-  rdf_assert(Material, urdf:'hasColor', Color),
-  rdf_assert(Color, urdf:'r', literal(type(xsd:double, R))),
-  rdf_assert(Color, urdf:'g', literal(type(xsd:double, G))),
-  rdf_assert(Color, urdf:'b', literal(type(xsd:double, B))),
-  rdf_assert(Color, urdf:'a', literal(type(xsd:double, A))).
+  Color = rgba(R,G,B,A),
+  owl_instance_from_class(urdf:'Color', ColorI),
+  rdf_assert(Material, urdf:'hasColor', ColorI),
+  rdf_assert(ColorI, urdf:'r', literal(type(xsd:double, R))),
+  rdf_assert(ColorI, urdf:'g', literal(type(xsd:double, G))),
+  rdf_assert(ColorI, urdf:'b', literal(type(xsd:double, B))),
+  rdf_assert(ColorI, urdf:'a', literal(type(xsd:double, A))).
