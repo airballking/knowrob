@@ -668,4 +668,36 @@ test(test_owl_visual_props_fl_caster_rotation_link) :-
   owl_has(Material, urdf:'name', literal(type(xsd:string, 'Caster'))),
   owl_has(Material, urdf:'filename', literal(type(xsd:string, 'package://pr2_description/materials/textures/pr2_caster_texture.png'))),!.
 
+test(owl_collision_props_base_footprint) :-
+  link_name(Link, base_footprint),
+  owl_has(Link, urdf:'hasCollisionProperties', Collision),
+  owl_has(Collision, urdf:'hasGeometry', Geometry),
+  owl_has(Collision, urdf:'hasOrigin', Origin),
+  owl_has(Origin, urdf:'hasPosition', Position),
+  owl_has(Origin, urdf:'hasOrientation', Orientation),
+  owl_individual_of(Collision, urdf:'CollisionProperties'),
+  owl_individual_of(Origin, urdf:'Transform'),
+  owl_individual_of(Geometry, urdf:'Box'),
+  owl_individual_of(Orientation, urdf:'Quaternion'),
+  owl_individual_of(Position, urdf:'Vector3d'),
+  owl_has(Geometry, urdf:'x', literal(type(xsd:double, 0.001))),
+  owl_has(Geometry, urdf:'y', literal(type(xsd:double, 0.001))),
+  owl_has(Geometry, urdf:'z', literal(type(xsd:double, 0.001))),
+  owl_has(Position, urdf:'x', literal(type(xsd:double, 0.0))),
+  owl_has(Position, urdf:'y', literal(type(xsd:double, 0.0))),
+  owl_has(Position, urdf:'z', literal(type(xsd:double, 0.071))),!.
+
+test(owl_collision_props_fl_caster_rotation_link) :-
+  link_name(Link, fl_caster_rotation_link),!,
+  owl_has(Link, urdf:'hasCollisionProperties', Collision),
+  owl_has(Collision, urdf:'hasGeometry', Geometry),
+  owl_individual_of(Collision, urdf:'CollisionProperties'),!,
+  owl_individual_of(Geometry, urdf:'Mesh'),!,
+  owl_has(Geometry, urdf:'filename', literal(type(xsd:string, 'package://pr2_description/meshes/base_v0/caster_L.stl'))),
+  owl_has(Geometry, urdf:'hasScale', Scale),
+  owl_individual_of(Scale, urdf:'Vector3d'),
+  owl_has(Scale, urdf:'x', literal(type(xsd:double, 1.0))),
+  owl_has(Scale, urdf:'y', literal(type(xsd:double, 1.0))),
+  owl_has(Scale, urdf:'z', literal(type(xsd:double, 1.0))),!.
+
 :- end_tests(urdf_parser).

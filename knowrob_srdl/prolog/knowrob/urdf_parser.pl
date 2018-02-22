@@ -78,7 +78,9 @@
       assert_geometry/2,
       assert_visuals/1,
       assert_visual/2,
-      assert_material/4
+      assert_material/4,
+      assert_collisions/1,
+      assert_collision/2
     ]).
 
 /** <module> Prolog-wrapping for the C++ URDF Parser.
@@ -445,9 +447,8 @@ assert_link_properties(Link) :-
   owl_individual_of(Link, urdf:'Link'),!,
   link_name(Link, LinkName),
   ((link_inertial(LinkName, _, _, _)) -> (assert_inertial_props(Link)) ; (true)),
-  ((link_num_visuals(LinkName, Num), Num>0) -> (assert_visuals(Link)) ; (true)),
-  %% TODO: complete me
-  true.
+  ((link_num_visuals(LinkName, VisNum), VisNum>0) -> (assert_visuals(Link)) ; (true)),
+  ((link_num_collisions(LinkName, ColNum), ColNum>0) -> (assert_collisions(Link)) ; (true)).
 
 assert_pose(pose([X,Y,Z],[QX,QY,QZ,QW]), Pose) :-
   owl_instance_from_class(urdf:'Vector3d', Position),
@@ -563,3 +564,29 @@ assert_material(Matname, Color, Filename, Material) :-
   rdf_assert(ColorI, urdf:'g', literal(type(xsd:double, G))),
   rdf_assert(ColorI, urdf:'b', literal(type(xsd:double, B))),
   rdf_assert(ColorI, urdf:'a', literal(type(xsd:double, A))).
+
+assert_collisions(Link) :-
+  link_name(Link, LinkName),!,
+  link_num_collisions(LinkName, Num),
+  HighestIndex is Num-1,
+  forall(between(0, HighestIndex, Index), assert_collision(Link, Index)).
+
+assert_collision(Link, Index) :-
+  % get all required info
+  link_name(Link, LinkName),
+  link_collision(LinkName, Index, Name, Pose, Geometry),
+
+  % create collision individual and connect to link
+  owl_instance_from_class(urdf:'CollisionProperties', Collision),
+  rdf_assert(Link, urdf:'hasCollisionProperties', Collision),
+
+  % optionally, add collision name
+  ((string_length(Name, Len), Len>0) -> (rdf_assert(Collision, urdf:'name', literal(type(xsd:string, Name)))) ; (true)),
+
+  % create origin individual and connect to collision
+  assert_pose(Pose, Origin),
+  rdf_assert(Collision, urdf:'hasOrigin', Origin),
+
+  % create geometry individual and connect to collision
+  assert_geometry(Geometry, GeometryIndividual),
+  rdf_assert(Collision, urdf:'hasGeometry', GeometryIndividual).
