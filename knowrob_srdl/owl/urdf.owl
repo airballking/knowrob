@@ -84,15 +84,7 @@
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#isAxisOf"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain>
-            <owl:Class>
-                <owl:unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint"/>
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint"/>
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint"/>
-                </owl:unionOf>
-            </owl:Class>
-        </rdfs:domain>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Vector3d"/>
     </owl:ObjectProperty>
     
@@ -325,15 +317,7 @@
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isAxisOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Vector3d"/>
-        <rdfs:range>
-            <owl:Class>
-                <owl:unionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint"/>
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint"/>
-                    <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint"/>
-                </owl:unionOf>
-            </owl:Class>
-        </rdfs:range>
+        <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
     </owl:ObjectProperty>
     
 
@@ -525,7 +509,7 @@
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#damping">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -546,7 +530,7 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#fallingCalibrationPos">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
-        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -575,7 +559,7 @@
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#friction">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -790,7 +774,7 @@
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#risingCalibrationPos">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
+        <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
     
@@ -1154,6 +1138,27 @@
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#hasChildLink"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#hasOrigin"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://knowrob.org/kb/urdf.owl#Transform"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#hasParentLink"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#name"/>
                 <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
@@ -1167,6 +1172,55 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#JointWithAxis">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#hasAxis"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://knowrob.org/kb/urdf.owl#Vector3d"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#hasMimicProperties"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#hasSafetyController"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://knowrob.org/kb/urdf.owl#SafetyController"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#damping"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#friction"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#fallingCalibrationPos"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#risingCalibrationPos"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Class joints with each one meaningful joint axis.</rdfs:comment>
     </owl:Class>
     
@@ -1176,6 +1230,20 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#effortLimit"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#velocityLimit"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#PlanarJoint"/>
         <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Class of joints with each of meaningful velocity and effort limit.</rdfs:comment>
     </owl:Class>
@@ -1186,6 +1254,20 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#lowerPosLimit"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#upperPosLimit"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Class of joints with each one meaningful lower and upper position limit.</rdfs:comment>
     </owl:Class>
     
@@ -1280,6 +1362,27 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#MimicProperties">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#hasMimickedJoint"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#mimicFactor"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#mimicOffset"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -1350,6 +1453,25 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#Robot">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#hasJoint"/>
+                <owl:allValuesFrom rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#hasLink"/>
+                <owl:allValuesFrom rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#name"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -1358,6 +1480,34 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#SafetyController">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#kPosition"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#kVelocity"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#softLowerLimit"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://knowrob.org/kb/urdf.owl#softUpperLimit"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
