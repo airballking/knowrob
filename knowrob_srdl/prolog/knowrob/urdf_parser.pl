@@ -422,10 +422,19 @@ assert_joint_properties(Robot) :-
   forall(owl_has(Robot, urdf:'hasJoint', Joint), 
     assert_joint_properties(Joint)).
 
+%% assert_joint_properties(+Joint) is det.
+%
+% A helper predicate to assert all properties of a
+% single joint of an already parsed URDF robot. Assumes 
+% that the actual joint individual has already been asserted.
 assert_joint_properties(Joint) :-
   owl_individual_of(Joint, urdf:'Joint'),!,
+
+  % assert required information: parent-/child-relationships, and origin
   assert_child_parent_links(Joint),
   assert_origin(Joint),
+
+  % assert optional properties: axis, limits, dynamics, safety, calibration, and mimic props
   ((owl_individual_of(Joint, urdf:'JointWithAxis')) -> (assert_axis(Joint)) ; (true)),
   ((joint_has_kin_limits(Joint)) -> (assert_kin_limits(Joint)) ; (true)),
   ((owl_individual_of(Joint, urdf:'JointWithPositionLimits')) -> (assert_pos_limits(Joint)) ; (true)),
@@ -434,6 +443,12 @@ assert_joint_properties(Joint) :-
   ((joint_has_calibration(Joint)) -> (assert_calibration(Joint)) ; (true)),
   ((joint_has_mimic_props(Joint)) -> (assert_mimic_props(Joint)) ; (true)).
 
+%% assert_child_parent_links(+Joint) is det.
+%
+% A helper predicate to assert the parent- and child-
+% link relationships of a joint. Assumes that the relevant
+% URDF has been parsed. Also assumes that the relevant joint
+% and link individuals have already been created.
 assert_child_parent_links(Joint) :-
   joint_name(Joint, JointName),!, 
   joint_child_parent(JointName, ChildLinkName, ParentLinkName),
@@ -442,6 +457,10 @@ assert_child_parent_links(Joint) :-
   rdf_assert(Joint, urdf:'hasParentLink', ParentLink),
   rdf_assert(Joint, urdf:'hasChildLink', ChildLink).
 
+%% assert_axis(+Joint) is det.
+%
+% A helper predicate to assert the axis of a joint. 
+% Assumes that the relevant URDF has been parsed.
 assert_axis(Joint) :-
   joint_name(Joint, JointName),!,
   joint_axis(JointName, [X,Y,Z]),
@@ -452,6 +471,10 @@ assert_axis(Joint) :-
   rdf_assert(Axis, urdf:'y', literal(type(xsd:double, Y))),
   rdf_assert(Axis, urdf:'z', literal(type(xsd:double, Z))).
 
+%% assert_pos_limits(+Joint) is det.
+%
+% A helper predicate to assert the upper/lower position limits 
+% of a joint. Assumes that the relevant URDF has been parsed.
 assert_pos_limits(Joint) :-
   joint_name(Joint, JointName),!,
   joint_pos_limits(JointName, Lower, Upper),
@@ -459,6 +482,10 @@ assert_pos_limits(Joint) :-
   rdf_assert(Joint, urdf:'lowerPosLimit', literal(type(xsd:double, Lower))),
   rdf_assert(Joint, urdf:'upperPosLimit', literal(type(xsd:double, Upper))).
 
+%% assert_kin_limits(+Joint) is det.
+%
+% A helper predicate to assert the velocity and effeort limits 
+% of a joint. Assumes that the relevant URDF has been parsed.
 assert_kin_limits(Joint) :-
   joint_name(Joint, JointName),!,
   owl_individual_of(Joint, urdf:'JointWithKinematicLimits'),!,
@@ -466,18 +493,30 @@ assert_kin_limits(Joint) :-
   rdf_assert(Joint, urdf:'velocityLimit', literal(type(xsd:double, VelocityLimit))),
   rdf_assert(Joint, urdf:'effortLimit', literal(type(xsd:double, EffortLimit))).
 
+%% assert_origin(+Joint) is det.
+%
+% A helper predicate to assert the origin of a joint. 
+% Assumes that the relevant URDF has been parsed.
 assert_origin(Joint) :-
   joint_name(Joint, JointName),!,
   joint_origin(JointName, Pose),
   assert_pose(Pose, Origin),
   rdf_assert(Joint, urdf:'hasOrigin', Origin).
 
+%% assert_dynamics(+Joint) is det.
+%
+% A helper predicate to assert the dynamic properties of 
+% a joint. Assumes that the relevant URDF has been parsed.
 assert_dynamics(Joint) :-
   joint_name(Joint, JointName),!,
   joint_dynamics(JointName, Damping, Friction),
   rdf_assert(Joint, urdf:'damping', literal(type(xsd:double, Damping))),
   rdf_assert(Joint, urdf:'friction', literal(type(xsd:double, Friction))).
 
+%% assert_safety_controller(+Joint) is det.
+%
+% A helper predicate to assert the safety controller of 
+% a joint. Assumes that the relevant URDF has been parsed.
 assert_safety_controller(Joint) :-
   joint_name(Joint, JointName),!,
   joint_safety(JointName, Lower, Upper, Kp, Kv),
@@ -488,15 +527,27 @@ assert_safety_controller(Joint) :-
   rdf_assert(Safety, urdf:'kPosition', literal(type(xsd:double, Kp))),
   rdf_assert(Safety, urdf:'kVelocity', literal(type(xsd:double, Kv))).
 
+%% assert_calibration(+Joint) is det.
+%
+% A helper predicate to assert the calibration properties of 
+% a joint. Assumes that the relevant URDF has been parsed.
 assert_calibration(Joint) :-
   joint_name(Joint, JointName),
+  % Note: rising and calibration positions are optional
   ((joint_calibration_rising(JointName, Rising)) -> (rdf_assert(Joint, urdf:'risingCalibrationPos', literal(type(xsd:double, Rising)))) ; (true)),
   ((joint_calibration_falling(JointName, Falling)) -> (rdf_assert(Joint, urdf:'fallingCalibrationPos', literal(type(xsd:double, Falling)))) ; (true)).
 
+%% assert_mimic_props(+Joint) is det.
+%
+% A helper predicate to assert the mimic properties of 
+% a joint. Assumes that the relevant URDF has been parsed.
 assert_mimic_props(Joint) :-
   joint_name(Joint, JointName),
+  % get all mimic properties
   joint_mimic(JointName, MimickedJointName, MimicFactor, MimicOffset),
+  % retrieve OWL individual of the mimicked joint
   joint_name(MimickedJoint, MimickedJointName),
+  % assert all the new info
   owl_instance_from_class(urdf:'MimicProperties', MimicProps),
   rdf_assert(Joint, urdf:'hasMimicProperties', MimicProps),
   rdf_assert(MimicProps, urdf:'hasMimickedJoint', MimickedJoint),
@@ -513,9 +564,15 @@ assert_link_properties(Robot) :-
   forall(owl_has(Robot, urdf:'hasLink', Link), 
     assert_link_properties(Link)).
 
+%% assert_link_properties(+Link) is det.
+%
+% A helper predicate to assert all properties of a
+% single link. Assumes that the relevant URDF robot
+% has already been parsed.
 assert_link_properties(Link) :-
   owl_individual_of(Link, urdf:'Link'),!,
   link_name(Link, LinkName),
+  % assert optional properties: inertial, visual, and collision properties.
   ((link_inertial(LinkName, _, _, _)) -> (assert_inertial_props(Link)) ; (true)),
   ((link_num_visuals(LinkName, VisNum), VisNum>0) -> (assert_visuals(Link)) ; (true)),
   ((link_num_collisions(LinkName, ColNum), ColNum>0) -> (assert_collisions(Link)) ; (true)).
