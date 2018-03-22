@@ -7,7 +7,14 @@
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:urdf="http://knowrob.org/kb/urdf#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="http://knowrob.org/kb/urdf.owl"/>
+    <owl:Ontology rdf:about="http://knowrob.org/kb/urdf.owl">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An OWL ontology mimicking the representations of the Universal Robot Description Format (URDF). The URDF standard for the tags robot, link, and joint have been followed completely. The URDF tags transmission and gazebo are not supported because they are either PR2-specific or gazebo-specific.
+
+Documentation on the URDF standard can be found here:
+http://wiki.ros.org/urdf/XML/robot
+http://wiki.ros.org/urdf/XML/joint
+http://wiki.ros.org/urdf/XML/link</rdfs:comment>
+    </owl:Ontology>
     
 
 
@@ -38,6 +45,7 @@
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#areInertialPropertiesOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#hasInertialProperties"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#InertialProperties"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
     </owl:ObjectProperty>
@@ -61,6 +69,7 @@
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#areMimicPropertiesOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#hasMimicProperties"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
     </owl:ObjectProperty>
@@ -171,6 +180,7 @@
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#hasJoint">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#isJointOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Robot"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:ObjectProperty>
@@ -182,6 +192,7 @@
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#hasLink">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <owl:inverseOf rdf:resource="http://knowrob.org/kb/urdf.owl#isLinkOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Robot"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
     </owl:ObjectProperty>
@@ -203,6 +214,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#hasMimicProperties">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
     </owl:ObjectProperty>
@@ -316,6 +328,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isAxisOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Vector3d"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
     </owl:ObjectProperty>
@@ -326,6 +339,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isChildLinkOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:ObjectProperty>
@@ -336,6 +350,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isColorOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Color"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#MaterialProperties"/>
     </owl:ObjectProperty>
@@ -346,6 +361,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isGeometryOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#GeometricShape"/>
         <rdfs:range>
             <owl:Class>
@@ -363,6 +379,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isInertiaMatrixOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#InertiaMatrix"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#InertialProperties"/>
     </owl:ObjectProperty>
@@ -395,6 +412,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isMimickedJointOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#MimicProperties"/>
     </owl:ObjectProperty>
@@ -405,6 +423,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isOrientationOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Quaternion"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Transform"/>
     </owl:ObjectProperty>
@@ -415,6 +434,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isOriginOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Transform"/>
         <rdfs:range>
             <owl:Class>
@@ -434,6 +454,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isParentLinkOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Link"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
     </owl:ObjectProperty>
@@ -444,6 +465,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isPositionOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#Vector3d"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#Transform"/>
     </owl:ObjectProperty>
@@ -454,6 +476,7 @@
 
     <owl:ObjectProperty rdf:about="http://knowrob.org/kb/urdf.owl#isSafetyControllerOf">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#SafetyController"/>
         <rdfs:range rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
     </owl:ObjectProperty>
@@ -530,6 +553,7 @@
 
     <owl:DatatypeProperty rdf:about="http://knowrob.org/kb/urdf.owl#fallingCalibrationPos">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
         <rdfs:domain rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
     </owl:DatatypeProperty>
@@ -928,6 +952,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A box-shaped geometric shape, rpresented by its three side lengths. The origin of the box is in its center.</rdfs:comment>
     </owl:Class>
     
 
@@ -957,6 +982,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The collision properties of a link. Note that this can be different from the visual properties of a link, for example, simpler collision models are often used to reduce computation time. Note: multiple instances of collision properties can exist for the same link. The union of the geometry they define forms the collision representation of the link.</rdfs:comment>
     </owl:Class>
     
 
@@ -993,6 +1019,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The color of a material specified by set of four numbers representing red/green/blue/alpha, each in the range of [0,1].</rdfs:comment>
     </owl:Class>
     
 
@@ -1002,7 +1029,7 @@
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#ContinuousJoint">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithKinematicLimits"/>
         <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
-        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A revolute joint without lower and upper position limits.</rdfs:comment>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A continuous hinge joint that rotates around the axis and has no upper and lower limits.</rdfs:comment>
     </owl:Class>
     
 
@@ -1025,6 +1052,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A cylinder-shaped geometric shape, represented by radius and length. The origin of the cylinder is in its center.</rdfs:comment>
     </owl:Class>
     
 
@@ -1033,6 +1061,7 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#FixedJoint">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This is not really a joint because it cannot move. All degrees of freedom are locked.</rdfs:comment>
     </owl:Class>
     
 
@@ -1041,6 +1070,7 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#FloatingJoint">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#Joint"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This joint allows motion for all 6 degrees of freedom. At the time of this writting, no such phyiscal mechanism exists. So, this is always used to represent a completely free virtual joint. For instance, the base pose of a flying quadrocopter relative to a map frame could be modeled with this.</rdfs:comment>
     </owl:Class>
     
 
@@ -1049,6 +1079,7 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#GeometricShape">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Base class for the shape of a visual or collision object.</rdfs:comment>
     </owl:Class>
     
 
@@ -1099,6 +1130,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The 3x3 rotational inertia matrix, represented in the inertia frame. Because the rotational inertia matrix is symmetric, only 6 above-diagonal elements of this matrix are specified here, using the attributes ixx, ixy, ixz, iyy, iyz, izz.</rdfs:comment>
     </owl:Class>
     
 
@@ -1128,6 +1160,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The inertial properties of a robot link.</rdfs:comment>
     </owl:Class>
     
 
@@ -1164,6 +1197,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Base class for all possible types of joints in URDF robots.</rdfs:comment>
     </owl:Class>
     
 
@@ -1221,7 +1255,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Class joints with each one meaningful joint axis.</rdfs:comment>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Base class of all joint types with one meaningful joint axis.</rdfs:comment>
     </owl:Class>
     
 
@@ -1245,7 +1279,7 @@
             </owl:Restriction>
         </rdfs:subClassOf>
         <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#PlanarJoint"/>
-        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Class of joints with each of meaningful velocity and effort limit.</rdfs:comment>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Base class for all joint types with meaningful velocity and effort limits.</rdfs:comment>
     </owl:Class>
     
 
@@ -1268,7 +1302,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Class of joints with each one meaningful lower and upper position limit.</rdfs:comment>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Base class for joint types with each meaningful lower and upper position limits.</rdfs:comment>
     </owl:Class>
     
 
@@ -1303,6 +1337,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The link class describes a rigid body with an inertia, visual and collision features.</rdfs:comment>
     </owl:Class>
     
 
@@ -1332,6 +1367,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The material of some visual properties, describing some visual surface properties for rendering.</rdfs:comment>
     </owl:Class>
     
 
@@ -1354,6 +1390,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An arbitrary geometric shaped represented by a CAD mesh. A trimesh element specified by a filename, and an optional scale that scales the mesh&apos;s axis-aligned-bounding-box. The recommended format for best texture and color support is Collada .dae files, though .stl files are also supported. The mesh file is not transferred between machines referencing the same model. It must be a local file.</rdfs:comment>
     </owl:Class>
     
 
@@ -1383,6 +1420,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A class specifying that a joint mimics another existing joint. The value of this joint can be computed as value = multiplier * other_joint_value + offset.</rdfs:comment>
     </owl:Class>
     
 
@@ -1401,6 +1439,7 @@
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#PrismaticJoint">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
         <owl:disjointWith rdf:resource="http://knowrob.org/kb/urdf.owl#RevoluteJoint"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A sliding joint that slides along the axis, and has a limited range specified by the upper and lower limits.</rdfs:comment>
     </owl:Class>
     
 
@@ -1437,6 +1476,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3D orientation representation used throught the URDF ontology.</rdfs:comment>
     </owl:Class>
     
 
@@ -1445,6 +1485,7 @@
 
     <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#RevoluteJoint">
         <rdfs:subClassOf rdf:resource="http://knowrob.org/kb/urdf.owl#JointWithPositionLimits"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A hinge joint that rotates along the axis and has a limited range specified by the upper and lower limits.</rdfs:comment>
     </owl:Class>
     
 
@@ -1472,6 +1513,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A class representing a class of URDF robots with a name, rigid bodies as links, and joints connecting those links in a kinematic tree.</rdfs:comment>
     </owl:Class>
     
 
@@ -1508,6 +1550,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Descibes the properties of an optional safety controller that is running in the low-level control module of the robot. Note: This feature is rather specific to the ros_control framework.</rdfs:comment>
     </owl:Class>
     
 
@@ -1523,6 +1566,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A sphere-shaped geometric shape, represented by its radius. The origin of the sphere is in its center.</rdfs:comment>
     </owl:Class>
     
 
@@ -1545,13 +1589,16 @@
                 <owl:onClass rdf:resource="http://knowrob.org/kb/urdf.owl#Vector3d"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">6D homogeneous transform representation used in the URDF ontology.</rdfs:comment>
     </owl:Class>
     
 
 
     <!-- http://knowrob.org/kb/urdf.owl#UrdfConcept -->
 
-    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#UrdfConcept"/>
+    <owl:Class rdf:about="http://knowrob.org/kb/urdf.owl#UrdfConcept">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Base class for all for all classes defined within the URDF standard.</rdfs:comment>
+    </owl:Class>
     
 
 
@@ -1580,6 +1627,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">3D translation representation used in the URDF ontology.</rdfs:comment>
     </owl:Class>
     
 
@@ -1616,6 +1664,7 @@
                 <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The visual properties of a link. Note that this can be different from the collision properties of a link, for example, simpler collision models are often used to reduce computation time. Note: multiple instances of visual properties can exist for the same link. The union of the geometry they define forms the visual representation of the link.</rdfs:comment>
     </owl:Class>
     
 
@@ -1663,6 +1712,87 @@
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#FixedJoint"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#FloatingJoint"/>
             <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#JointWithAxis"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointProperties"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#areCollisionPropertiesOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#areInertialPropertiesOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#areMaterialPropertiesOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#areMimicPropertiesOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#areVisualPropertiesOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasAxis"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasChildLink"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasCollisionProperties"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasColor"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasGeometry"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasInertiaMatrix"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasInertialProperties"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasLink"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasMaterialProperties"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasMimicProperties"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasMimickedJoint"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasOrientation"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasOrigin"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasParentLink"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasPosition"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasSafetyController"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasScale"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#hasVisualProperties"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isAxisOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isChildLinkOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isColorOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isGeometryOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isInertiaMatrixOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isJointOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isLinkOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isMimickedJointOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isOrientationOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isOriginOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isParentLinkOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isPositionOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isSafetyControllerOf"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#isScaleOf"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointProperties"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#a"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#b"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#damping"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#effortLimit"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#fallingCalibrationPos"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#filename"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#friction"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#g"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ixx"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ixy"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#ixz"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#iyy"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#iyz"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#izz"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#kPosition"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#kVelocity"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#length"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#lowerPosLimit"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#mass"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#mimicFactor"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#mimicOffset"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#name"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#r"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#radius"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#risingCalibrationPos"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#softLowerLimit"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#softUpperLimit"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#upperPosLimit"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#velocityLimit"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#w"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#x"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#y"/>
+            <rdf:Description rdf:about="http://knowrob.org/kb/urdf.owl#z"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>
