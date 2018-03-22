@@ -279,6 +279,11 @@
 % details, please visit:
 % http://wiki.ros.org/pr2_controller_manager/safety_limits
 
+%% urdf_owl_joint_type(-PrologAtom, -OwlType) is semidet.
+%
+% A helper predicate to map joint type representations from
+% the atoms used by the prolog-wrapped URDF parser and the OWL
+% representation.
 urdf_owl_joint_type(prismatic, urdf:'PrismaticJoint').
 
 urdf_owl_joint_type(fixed, urdf:'FixedJoint').
@@ -291,18 +296,40 @@ urdf_owl_joint_type(planar, urdf:'PlanarJoint').
 
 urdf_owl_joint_type(floating, urdf:'FloatingJoint').
 
+%% joint_name(-JointIndividual, -JointName) is semidet.
+%
+% A helper predicate to retrieve the joint name of an OWL
+% URDF joint as an atom, or to retrieve OWL joints using
+% their name.
 joint_name(Joint, Name) :-
   owl_individual_of(Joint, urdf:'Joint'),
   owl_has(Joint, urdf:'name', literal(type(xsd:string, Name))).
 
+%% link_name(-LinkIndividual, -LinkName) is semidet.
+%
+% A helper predicate to retrieve the link name of an OWL
+% URDF link as an atom, or to retrieve OWL links using
+% their name.
 link_name(Link, Name) :-
   owl_individual_of(Link, urdf:'Link'),
   owl_has(Link, urdf:'name', literal(type(xsd:string, Name))).
 
+%% assert_urdf_file(+FileName, -Robot) is det.
+%
+% Top-level predicate to parse an URDF file and assert the
+% corresponding OWL representation in the RDF triple store.
+%
+% Binds the newly created robot individual to Robot.
 assert_urdf_file(FileName, Robot) :-
   load_urdf_file(FileName),
   assert_robot(Robot).
 
+%% assert_robot(-Robot) is det.
+%
+% Top-level predicate to assert an already-parsed URDF robot
+% into the RDF triple store.
+%
+% Binds the newly created robot individual to Robot.
 assert_robot(Robot) :-
   assert_robot_individual(Robot),
   assert_robot_links(Robot),
@@ -310,11 +337,21 @@ assert_robot(Robot) :-
   assert_joint_properties(Robot),
   assert_link_properties(Robot).
 
+%% assert_robot_individual(-Robot) is det.
+%
+% Asserts the robot individual of an already-parsed URDF 
+% robot into the RDF triple store.
+%
+% Binds the newly created robot individual to Robot.
 assert_robot_individual(Robot) :-
   owl_instance_from_class(urdf:'Robot', Robot),
   robot_name(RobotName),
   rdf_assert(Robot, urdf:'name', literal(type(xsd:string, RobotName))).
 
+%% assert_robot_links(+Robot) is det.
+%
+% Asserts the robot individuals of an already-parsed URDF 
+% robot into the RDF triple store.
 assert_robot_links(Robot) :-
   link_names(LinkNames),
   forall(member(LinkName, LinkNames), (   
@@ -322,6 +359,10 @@ assert_robot_links(Robot) :-
     rdf_assert(Robot, urdf:'hasLink', Link),
     rdf_assert(Link, urdf:'name', literal(type(xsd:string, LinkName))))).
 
+%% assert_robot_joints(+Robot) is det.
+%
+% Asserts the joint individuals of an already-parsed URDF 
+% robot into the RDF triple store.
 assert_robot_joints(Robot) :-
   joint_names(JointNames),
   forall(member(JointName, JointNames), (   
@@ -331,27 +372,51 @@ assert_robot_joints(Robot) :-
     rdf_assert(Robot, urdf:'hasJoint', Joint),
     rdf_assert(Joint, urdf:'name', literal(type(xsd:string, JointName))))).
 
+%% joint_has_kin_limits(+Joint) is det.
+%
+% A helper predicate to check whether a parsed URDF joint
+% has kinematic limits in the URDF.
 joint_has_kin_limits(Joint) :-
-  owl_individual_of(Joint, urdf:'JointWithKinematicLimits'),
   joint_name(Joint, JointName),
   joint_kin_limits(JointName, _, _).
 
+%% joint_has_dynamics(+Joint) is det.
+%
+% A helper predicate to check whether a parsed URDF joint 
+% has dynamic information in the URDF.
 joint_has_dynamics(Joint) :-
   joint_name(Joint, JointName),
   joint_dynamics(JointName, _, _).
 
+%% joint_has_safety_controller(+Joint) is det.
+%
+% A helper predicate to check whether a parsed URDF joint
+% has a safety controller in the URDF.
 joint_has_safety_controller(Joint) :-
   joint_name(Joint, JointName),!,
   joint_safety(JointName, _, _, _, _).
 
+%% joint_has_calibration(+Joint) is det.
+%
+% A helper predicate to check whether a parsed URDF joint
+% has calibration information in the URDF.
 joint_has_calibration(Joint) :-
-  joint_name(Joint, JointName),
+  joint_name(Joint, JointName),!,
   (joint_calibration_rising(JointName, _); joint_calibration_falling(JointName, _)).
 
+%% joint_has_mimic_props(+Joint) is det.
+%
+% A helper predicate to check whether a parsed URDF joint
+% has mimic information in the URDF.
 joint_has_mimic_props(Joint) :-
-  joint_name(Joint, JointName),
+  joint_name(Joint, JointName),!,
   joint_mimic(JointName, _, _, _).
 
+%% assert_joint_properties(+Robot) is det.
+%
+% A helper predicate to assert all joint properties of
+% an already parsed URDF robot. Assumes that the actual
+% joint individuals have already been asserted.
 assert_joint_properties(Robot) :-
   owl_individual_of(Robot, urdf:'Robot'),!,
   forall(owl_has(Robot, urdf:'hasJoint', Joint), 
@@ -438,6 +503,11 @@ assert_mimic_props(Joint) :-
   rdf_assert(MimicProps, urdf:'mimicFactor', literal(type(xsd:double, MimicFactor))),
   rdf_assert(MimicProps, urdf:'mimicOffset', literal(type(xsd:double, MimicOffset))).
 
+%% assert_link_properties(+Robot) is det.
+%
+% A helper predicate to assert all link properties of
+% an already parsed URDF robot. Assumes that the actual
+% link individuals have already been asserted.
 assert_link_properties(Robot) :-
   owl_individual_of(Robot, urdf:'Robot'),!,
   forall(owl_has(Robot, urdf:'hasLink', Link), 
