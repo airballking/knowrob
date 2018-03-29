@@ -98,6 +98,7 @@
 :- use_module(library('knowrob/owl')).
 
 :- rdf_db:rdf_register_ns(urdf, 'http://knowrob.org/kb/urdf.owl#', [keep(true)]).
+:- rdf_db:rdf_register_ns(xsd, 'http://www.w3.org/2001/XSMLSchema#', [keep(true)]).
 
 :- rdf_meta
         urdf_owl_joint_type(r,r),

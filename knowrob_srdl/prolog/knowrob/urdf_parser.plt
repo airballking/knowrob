@@ -32,6 +32,7 @@
 
 :- owl_parser:owl_parse('package://knowrob_srdl/owl/urdf.owl').
 :- rdf_db:rdf_register_ns(urdf, 'http://knowrob.org/kb/urdf.owl#', [keep(true)]).
+:- rdf_db:rdf_register_ns(xsd, 'http://www.w3.org/2001/XMLSchema#', [keep(true)]).
 
 test(load_urdf_file_pr2) :-
   ros_package_path('knowrob_srdl', X),
